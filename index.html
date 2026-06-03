@@ -1310,13 +1310,7 @@ async function callAI(prompt) {
     }
   );
   const data = await resp.json();
-  if (data.error) {
-    if (/api.?key|invalid|unauthorized|403/i.test(data.error.message || '')) {
-      localStorage.removeItem('dna_api_key');
-      _apiKey = '';
-    }
-    throw new Error(data.error.message || 'Gemini API error');
-  }
+  if (data.error) throw new Error(data.error.message || 'Gemini API error');
   return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
