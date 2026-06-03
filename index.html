@@ -1164,7 +1164,7 @@ canvas { display: block; }
 
 // ── MODE ──
 const IS_COWORK = typeof window.cowork !== 'undefined';
-let _apiKey = IS_COWORK ? '' : (localStorage.getItem('dna_api_key') || '');
+let _apiKey = IS_COWORK ? '' : (localStorage.getItem('dna_api_key') || 'AQ.Ab8RN6IYf0QDbXuWNooOtc1i_4qSOpzPdFJKgP9bpSpYT8FnPQ');
 
 // ── BACKGROUND DNA ANIMATION ──
 let bgDnaAnimId = null, bgDnaFrame = 0;
@@ -1288,13 +1288,6 @@ let sortK = 'avg', sortD = -1, radarChart = null, dnaAnimId = null;
 
 // ── INIT ──
 (function init() {
-  if (!IS_COWORK && !_apiKey) {
-    const k = prompt('Paste your Google AI Studio API key to get started.\nGet one free at aistudio.google.com → Get API Key\n\n(Saved locally — you\'ll never be asked again)');
-    if (k && k.trim().length > 10) {
-      _apiKey = k.trim();
-      localStorage.setItem('dna_api_key', _apiKey);
-    }
-  }
   startBgDNA();
 })();
 
