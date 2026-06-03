@@ -1164,7 +1164,7 @@ canvas { display: block; }
 
 // ── MODE ──
 const IS_COWORK = typeof window.cowork !== 'undefined';
-let _apiKey = IS_COWORK ? '' : (localStorage.getItem('anthropic_key') || '');
+let _apiKey = IS_COWORK ? '' : (localStorage.getItem('dna_api_key') || '');
 
 // ── BACKGROUND DNA ANIMATION ──
 let bgDnaAnimId = null, bgDnaFrame = 0;
@@ -1289,11 +1289,10 @@ let sortK = 'avg', sortD = -1, radarChart = null, dnaAnimId = null;
 // ── INIT ──
 (function init() {
   if (!IS_COWORK && !_apiKey) {
-    // First-time web mode: prompt once, store permanently
-    const k = prompt('Paste your Anthropic API key to get started.\nGet one at console.anthropic.com\n\n(Saved locally — you\'ll never be asked again)');
-    if (k && k.trim().length > 20) {
+    const k = prompt('Paste your Google AI Studio API key to get started.\nGet one free at aistudio.google.com → Get API Key\n\n(Saved locally — you\'ll never be asked again)');
+    if (k && k.trim().length > 10) {
       _apiKey = k.trim();
-      localStorage.setItem('anthropic_key', _apiKey);
+      localStorage.setItem('dna_api_key', _apiKey);
     }
   }
   startBgDNA();
@@ -1306,30 +1305,26 @@ async function callAI(prompt) {
     return extractText(res);
   }
   if (!_apiKey) throw new Error('No API key set. Reload the page to enter your key.');
-  const resp = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': _apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({
-      model: 'claude-opus-4-5',
-      max_tokens: 4096,
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
+  const resp = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${_apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: 4096, temperature: 0.7 }
+      })
+    }
+  );
   const data = await resp.json();
   if (data.error) {
-    // Bad key — clear it so the prompt fires on next reload
-    if (/auth|invalid|key/i.test(data.error.message)) {
-      localStorage.removeItem('anthropic_key');
+    if (/api.?key|invalid|unauthorized|403/i.test(data.error.message || '')) {
+      localStorage.removeItem('dna_api_key');
       _apiKey = '';
     }
-    throw new Error(data.error.message);
+    throw new Error(data.error.message || 'Gemini API error');
   }
-  return data.content?.[0]?.text || '';
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
 function extractText(res) {
