@@ -118,6 +118,71 @@ button { font-family: var(--font); cursor: pointer; }
 
 
 /* ══════════════════════════════════════════
+   KEY SETUP SCREEN
+══════════════════════════════════════════ */
+.key-screen {
+  min-height: calc(100vh - 56px);
+  display: flex; align-items: center; justify-content: center;
+  background: #EDF2FA; padding: 40px 20px;
+}
+.key-card {
+  background: #fff;
+  border: 1px solid rgba(30,20,60,.1);
+  border-top: 3px solid #F0047F;
+  border-radius: 20px;
+  padding: 48px 44px;
+  max-width: 500px; width: 100%;
+  box-shadow: 0 8px 40px rgba(30,20,60,.08);
+}
+.key-eyebrow {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .14em; color: #F0047F; margin-bottom: 16px;
+}
+.key-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 28px; font-weight: 700; letter-spacing: -.5px;
+  color: #1a1340; margin-bottom: 8px; line-height: 1.2;
+}
+.key-sub {
+  font-size: 14px; color: rgba(30,20,60,.5); line-height: 1.7; margin-bottom: 28px;
+}
+.key-steps {
+  display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px;
+}
+.key-step {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 13px; color: rgba(30,20,60,.65); line-height: 1.5;
+}
+.key-step-num {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  background: #F0047F; color: #fff;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+.key-step a { color: #7C3AED; font-weight: 600; text-decoration: none; }
+.key-step a:hover { text-decoration: underline; }
+.key-input-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.key-input {
+  flex: 1; height: 44px; padding: 0 14px;
+  border: 1.5px solid rgba(30,20,60,.15); border-radius: 10px;
+  font-size: 13px; font-family: var(--mono);
+  color: #1a1340; background: #F8F7FF; outline: none;
+  transition: border-color .15s;
+}
+.key-input:focus { border-color: #7C3AED; }
+.key-input::placeholder { color: rgba(30,20,60,.3); }
+.key-submit {
+  height: 44px; padding: 0 22px; flex-shrink: 0;
+  background: #F0047F; color: #fff;
+  border: none; border-radius: 10px;
+  font-size: 13px; font-weight: 700;
+  transition: all .15s; cursor: pointer;
+}
+.key-submit:hover { background: #D4036E; transform: translateY(-1px); }
+.key-note { font-size: 11px; color: rgba(30,20,60,.35); line-height: 1.6; }
+
+/* ══════════════════════════════════════════
    UPLOAD SCREEN — Bloodstream light
 ══════════════════════════════════════════ */
 .upload-screen {
@@ -838,6 +903,25 @@ canvas { display: block; }
   </div>
 </header>
 
+<!-- ═══ KEY SETUP SCREEN ═══ -->
+<div class="key-screen hidden" id="keyScreen">
+  <div class="key-card">
+    <div class="key-eyebrow">VML × BAV — One-time setup</div>
+    <div class="key-title">Connect your free AI key</div>
+    <div class="key-sub">This tool uses Google's AI (free). You need a personal API key — takes 30 seconds to create and is saved in your browser.</div>
+    <div class="key-steps">
+      <div class="key-step"><div class="key-step-num">1</div><span>Go to <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a> and sign in with any Google account</span></div>
+      <div class="key-step"><div class="key-step-num">2</div><span>Click <strong>Get API Key</strong> → <strong>Create API key</strong> → copy it</span></div>
+      <div class="key-step"><div class="key-step-num">3</div><span>Paste it below — you'll never be asked again</span></div>
+    </div>
+    <div class="key-input-row">
+      <input class="key-input" id="keyInput" type="password" placeholder="AIzaSy…" autocomplete="off" />
+      <button class="key-submit" onclick="submitKey()">Let's go →</button>
+    </div>
+    <div class="key-note">Your key is stored only in this browser. It's never sent anywhere except Google's API.</div>
+  </div>
+</div>
+
 <!-- ═══ ABOUT DNA PANEL ═══ -->
 <div class="panel-overlay" id="panelOverlay" onclick="closeAboutDNA()"></div>
 <aside class="dna-panel" id="dnaPanel">
@@ -1289,14 +1373,23 @@ let sortK = 'avg', sortD = -1, radarChart = null, dnaAnimId = null;
 // ── INIT ──
 (function init() {
   if (!IS_COWORK && !_apiKey) {
-    const k = prompt('Paste your Google AI Studio API key to get started.\nGet one free at aistudio.google.com → Get API Key\n\n(Saved in your browser — you\'ll never be asked again)');
-    if (k && k.trim().length > 10) {
-      _apiKey = k.trim();
-      localStorage.setItem('dna_api_key', _apiKey);
-    }
+    document.getElementById('uploadScreen').classList.add('hidden');
+    document.getElementById('keyScreen').classList.remove('hidden');
+    return;
   }
   startBgDNA();
 })();
+
+function submitKey() {
+  const k = document.getElementById('keyInput').value.trim();
+  if (k.length < 10) { document.getElementById('keyInput').style.borderColor='#DC2626'; return; }
+  _apiKey = k;
+  localStorage.setItem('dna_api_key', k);
+  document.getElementById('keyScreen').classList.add('hidden');
+  document.getElementById('uploadScreen').classList.remove('hidden');
+  startBgDNA();
+}
+document.getElementById('keyInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') submitKey(); });
 
 // ── AI CALL ──
 async function callAI(prompt) {
