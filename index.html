@@ -118,71 +118,6 @@ button { font-family: var(--font); cursor: pointer; }
 
 
 /* ══════════════════════════════════════════
-   KEY SETUP SCREEN
-══════════════════════════════════════════ */
-.key-screen {
-  min-height: calc(100vh - 56px);
-  display: flex; align-items: center; justify-content: center;
-  background: #EDF2FA; padding: 40px 20px;
-}
-.key-card {
-  background: #fff;
-  border: 1px solid rgba(30,20,60,.1);
-  border-top: 3px solid #F0047F;
-  border-radius: 20px;
-  padding: 48px 44px;
-  max-width: 500px; width: 100%;
-  box-shadow: 0 8px 40px rgba(30,20,60,.08);
-}
-.key-eyebrow {
-  font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .14em; color: #F0047F; margin-bottom: 16px;
-}
-.key-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 28px; font-weight: 700; letter-spacing: -.5px;
-  color: #1a1340; margin-bottom: 8px; line-height: 1.2;
-}
-.key-sub {
-  font-size: 14px; color: rgba(30,20,60,.5); line-height: 1.7; margin-bottom: 28px;
-}
-.key-steps {
-  display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px;
-}
-.key-step {
-  display: flex; align-items: flex-start; gap: 12px;
-  font-size: 13px; color: rgba(30,20,60,.65); line-height: 1.5;
-}
-.key-step-num {
-  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
-  background: #F0047F; color: #fff;
-  font-size: 11px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-  margin-top: 1px;
-}
-.key-step a { color: #7C3AED; font-weight: 600; text-decoration: none; }
-.key-step a:hover { text-decoration: underline; }
-.key-input-row { display: flex; gap: 8px; margin-bottom: 10px; }
-.key-input {
-  flex: 1; height: 44px; padding: 0 14px;
-  border: 1.5px solid rgba(30,20,60,.15); border-radius: 10px;
-  font-size: 13px; font-family: var(--mono);
-  color: #1a1340; background: #F8F7FF; outline: none;
-  transition: border-color .15s;
-}
-.key-input:focus { border-color: #7C3AED; }
-.key-input::placeholder { color: rgba(30,20,60,.3); }
-.key-submit {
-  height: 44px; padding: 0 22px; flex-shrink: 0;
-  background: #F0047F; color: #fff;
-  border: none; border-radius: 10px;
-  font-size: 13px; font-weight: 700;
-  transition: all .15s; cursor: pointer;
-}
-.key-submit:hover { background: #D4036E; transform: translateY(-1px); }
-.key-note { font-size: 11px; color: rgba(30,20,60,.35); line-height: 1.6; }
-
-/* ══════════════════════════════════════════
    UPLOAD SCREEN — Bloodstream light
 ══════════════════════════════════════════ */
 .upload-screen {
@@ -190,14 +125,15 @@ button { font-family: var(--font); cursor: pointer; }
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   padding: 60px 20px;
-  background: #EDF2FA;
+  background: #08051a;
   position: relative; overflow: hidden;
 }
-#bgDnaCanvas {
+#bgHelixVideo {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  pointer-events: none; display: block;
-  opacity: .55;
+  object-fit: cover;
+  pointer-events: none;
+  opacity: .9;
 }
 .upload-content {
   position: relative; z-index: 1;
@@ -210,54 +146,57 @@ button { font-family: var(--font); cursor: pointer; }
 .upload-eyebrow {
   font-size: 10px; font-weight: 700;
   text-transform: uppercase; letter-spacing: .18em;
-  color: rgba(30,20,60,.35); margin-bottom: 18px;
+  color: rgba(255,255,255,.45); margin-bottom: 18px;
   display: flex; align-items: center; justify-content: center; gap: 10px;
 }
 .upload-eyebrow::before, .upload-eyebrow::after {
   content: ''; display: block; width: 28px; height: 1px;
-  background: rgba(30,20,60,.15);
+  background: rgba(255,255,255,.18);
 }
 .upload-title {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: clamp(42px, 6vw, 70px);
   font-weight: 700; letter-spacing: -1px;
-  line-height: 1.1; color: #1a1340;
+  line-height: 1.1; color: #fff;
   margin-bottom: 16px;
 }
 .upload-title em {
   font-style: italic;
-  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 50%, #EC4899 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 /* Divider line under headline (Bloodstream style) */
 .upload-divider {
   width: 44px; height: 2px; margin: 0 auto 16px;
-  background: linear-gradient(90deg, #2563EB, #EC4899);
+  background: linear-gradient(90deg, #60a5fa, #f472b6);
   border-radius: 2px;
 }
 .upload-sub {
-  font-size: 15px; color: rgba(30,20,60,.5);
+  font-size: 15px; color: rgba(255,255,255,.55);
   line-height: 1.7; max-width: 480px; margin: 0 auto;
 }
 .upload-area { width: 100%; max-width: 540px; }
 .drop-zone {
-  background: #fff;
-  border: 1px solid rgba(30,20,60,.1);
+  background: rgba(255,255,255,.07);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,.14);
   border-top: 3px solid #F0047F;
   border-radius: 16px; padding: 40px 32px;
   text-align: center; cursor: pointer;
   transition: all .2s;
-  box-shadow: 0 4px 24px rgba(30,20,60,.06), 0 1px 4px rgba(30,20,60,.04);
+  box-shadow: 0 4px 40px rgba(0,0,0,.35);
 }
 .drop-zone:hover, .drop-zone.drag {
-  border-top-color: #7C3AED;
-  box-shadow: 0 8px 40px rgba(30,20,60,.1), 0 2px 8px rgba(30,20,60,.05);
+  border-top-color: #a78bfa;
+  background: rgba(255,255,255,.11);
+  box-shadow: 0 8px 60px rgba(0,0,0,.45);
   transform: translateY(-2px);
 }
-.drop-icon { font-size: 28px; margin-bottom: 10px; opacity: .5; }
-.drop-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: #1a1340; }
-.drop-sub { font-size: 13px; color: rgba(30,20,60,.45); margin-bottom: 22px; line-height: 1.6; }
+.drop-icon { font-size: 28px; margin-bottom: 10px; opacity: .6; }
+.drop-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: #fff; }
+.drop-sub { font-size: 13px; color: rgba(255,255,255,.5); margin-bottom: 22px; line-height: 1.6; }
 .drop-btn {
   display: inline-flex; align-items: center; gap: 7px;
   height: 42px; padding: 0 24px;
@@ -274,9 +213,9 @@ button { font-family: var(--font); cursor: pointer; }
 }
 .mpill {
   display: inline-flex; align-items: center; gap: 5px;
-  background: rgba(30,20,60,.04); border: 1px solid rgba(30,20,60,.1);
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
   border-radius: 20px; padding: 4px 10px 4px 5px;
-  font-size: 11px; color: rgba(30,20,60,.5);
+  font-size: 11px; color: rgba(255,255,255,.5);
 }
 .mpill-dot {
   width: 16px; height: 16px; border-radius: 50%;
@@ -288,26 +227,25 @@ button { font-family: var(--font); cursor: pointer; }
 .mpill-dot.A { background: var(--A); }
 .sess-divider {
   display: flex; align-items: center; gap: 12px;
-  color: rgba(30,20,60,.3); font-size: 12px; margin: 18px 0;
+  color: rgba(255,255,255,.25); font-size: 12px; margin: 18px 0;
 }
 .sess-divider::before, .sess-divider::after {
-  content: ''; flex: 1; height: 1px; background: rgba(30,20,60,.12);
+  content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.1);
 }
 .sess-load-btn {
   width: 100%; height: 44px;
-  background: #fff;
-  border: 1px solid rgba(30,20,60,.12);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 10px;
   font-size: 13px; font-weight: 500;
-  color: rgba(30,20,60,.5);
+  color: rgba(255,255,255,.45);
   display: flex; align-items: center; justify-content: center; gap: 8px;
   transition: all .18s;
-  box-shadow: 0 1px 4px rgba(30,20,60,.04);
 }
 .sess-load-btn:hover {
-  border-color: #7C3AED;
-  color: #7C3AED;
-  box-shadow: 0 4px 16px rgba(124,58,237,.1);
+  border-color: #a78bfa;
+  color: #a78bfa;
+  background: rgba(167,139,250,.08);
 }
 #fi, #fjson { display: none; }
 
@@ -903,25 +841,6 @@ canvas { display: block; }
   </div>
 </header>
 
-<!-- ═══ KEY SETUP SCREEN ═══ -->
-<div class="key-screen hidden" id="keyScreen">
-  <div class="key-card">
-    <div class="key-eyebrow">VML × BAV — One-time setup</div>
-    <div class="key-title">Connect your free AI key</div>
-    <div class="key-sub">This tool uses Google's AI (free). You need a personal API key — takes 30 seconds to create and is saved in your browser.</div>
-    <div class="key-steps">
-      <div class="key-step"><div class="key-step-num">1</div><span>Go to <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a> and sign in with any Google account</span></div>
-      <div class="key-step"><div class="key-step-num">2</div><span>Click <strong>Get API Key</strong> → <strong>Create API key</strong> → copy it</span></div>
-      <div class="key-step"><div class="key-step-num">3</div><span>Paste it below — you'll never be asked again</span></div>
-    </div>
-    <div class="key-input-row">
-      <input class="key-input" id="keyInput" type="password" placeholder="AIzaSy…" autocomplete="off" />
-      <button class="key-submit" onclick="submitKey()">Let's go →</button>
-    </div>
-    <div class="key-note">Your key is stored only in this browser. It's never sent anywhere except Google's API.</div>
-  </div>
-</div>
-
 <!-- ═══ ABOUT DNA PANEL ═══ -->
 <div class="panel-overlay" id="panelOverlay" onclick="closeAboutDNA()"></div>
 <aside class="dna-panel" id="dnaPanel">
@@ -1004,7 +923,7 @@ canvas { display: block; }
 
 <!-- ═══ UPLOAD SCREEN ═══ -->
 <div class="upload-screen" id="uploadScreen">
-  <canvas id="bgDnaCanvas"></canvas>
+  <video id="bgHelixVideo" autoplay muted loop playsinline preload="auto" src="helix.mp4"></video>
   <div class="blob blob-purple"></div>
   <div class="blob blob-pink"></div>
   <div class="blob blob-blue"></div>
@@ -1248,7 +1167,7 @@ canvas { display: block; }
 
 // ── MODE ──
 const IS_COWORK = typeof window.cowork !== 'undefined';
-let _apiKey = IS_COWORK ? '' : (localStorage.getItem('dna_api_key') || '');
+let _apiKey = IS_COWORK ? '' : (localStorage.getItem('anthropic_key') || '');
 
 // ── BACKGROUND DNA ANIMATION ──
 let bgDnaAnimId = null, bgDnaFrame = 0;
@@ -1373,23 +1292,14 @@ let sortK = 'avg', sortD = -1, radarChart = null, dnaAnimId = null;
 // ── INIT ──
 (function init() {
   if (!IS_COWORK && !_apiKey) {
-    document.getElementById('uploadScreen').classList.add('hidden');
-    document.getElementById('keyScreen').classList.remove('hidden');
-    return;
+    // First-time web mode: prompt once, store permanently
+    const k = prompt('Paste your Anthropic API key to get started.\nGet one at console.anthropic.com\n\n(Saved locally — you\'ll never be asked again)');
+    if (k && k.trim().length > 20) {
+      _apiKey = k.trim();
+      localStorage.setItem('anthropic_key', _apiKey);
+    }
   }
-  startBgDNA();
 })();
-
-function submitKey() {
-  const k = document.getElementById('keyInput').value.trim();
-  if (k.length < 10) { document.getElementById('keyInput').style.borderColor='#DC2626'; return; }
-  _apiKey = k;
-  localStorage.setItem('dna_api_key', k);
-  document.getElementById('keyScreen').classList.add('hidden');
-  document.getElementById('uploadScreen').classList.remove('hidden');
-  startBgDNA();
-}
-document.getElementById('keyInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') submitKey(); });
 
 // ── AI CALL ──
 async function callAI(prompt) {
@@ -1398,24 +1308,30 @@ async function callAI(prompt) {
     return extractText(res);
   }
   if (!_apiKey) throw new Error('No API key set. Reload the page to enter your key.');
-  const resp = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${_apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          maxOutputTokens: 8192,
-          temperature: 0.7,
-          responseMimeType: 'application/json'
-        }
-      })
-    }
-  );
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': _apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-opus-4-5',
+      max_tokens: 4096,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
   const data = await resp.json();
-  if (data.error) throw new Error(data.error.message || 'Gemini API error');
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  if (data.error) {
+    // Bad key — clear it so the prompt fires on next reload
+    if (/auth|invalid|key/i.test(data.error.message)) {
+      localStorage.removeItem('anthropic_key');
+      _apiKey = '';
+    }
+    throw new Error(data.error.message);
+  }
+  return data.content?.[0]?.text || '';
 }
 
 function extractText(res) {
@@ -1543,7 +1459,6 @@ function computeScores(rows) {
 }
 
 function activateApp() {
-  stopBgDNA();
   // Build year selector
   const sel = document.getElementById('yrSel'); sel.innerHTML='';
   if (meta.years.length>1) {
@@ -1983,7 +1898,6 @@ function doReset() {
   _competitors = []; _manualComps = [];
   document.getElementById('fi').value = '';
   stopDNAAnimation();
-  startBgDNA();
 }
 
 // ── ABOUT DNA PANEL ──
