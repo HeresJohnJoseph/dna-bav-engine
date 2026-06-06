@@ -364,40 +364,63 @@ td.sc { text-align: center; }
 .diag-btn:disabled { opacity: .35; cursor: not-allowed; }
 
 /* ══════════════════════════════════════════
-   LOADING — DNA HELIX
+   LOADING — VIDEO BACKGROUND
 ══════════════════════════════════════════ */
 .loading-screen {
-  display: none; flex-direction: column; align-items: center;
-  padding: 80px 20px; text-align: center;
+  display: none; position: relative; overflow: hidden;
+  flex-direction: column; align-items: center; justify-content: center;
+  min-height: calc(100vh - 56px);
+  background: #08051a;
+  text-align: center;
+  padding: 60px 20px;
 }
 .loading-screen.on { display: flex; }
-.dna-wrap { position: relative; width: 120px; height: 200px; margin-bottom: 32px; }
-.dna-canvas { display: block; }
+#loadingVideo {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: .85;
+  pointer-events: none;
+}
+.loading-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(8,5,26,.3) 0%, rgba(8,5,26,.55) 100%);
+  pointer-events: none;
+}
+.loading-content {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+}
 .loading-brand {
-  font-size: 28px; font-weight: 800; letter-spacing: -.6px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(32px, 5vw, 52px); font-weight: 700;
+  letter-spacing: -.6px; color: #fff;
   margin-bottom: 10px;
 }
 .loading-step {
-  font-size: 13px; color: var(--ink2);
+  font-size: 14px; color: rgba(255,255,255,.6);
   min-height: 20px; transition: opacity .3s;
+  margin-bottom: 32px;
 }
 .loading-steps {
-  margin-top: 24px; display: flex; flex-direction: column; gap: 6px;
-  max-width: 360px; width: 100%;
+  display: flex; flex-direction: column; gap: 6px;
+  max-width: 380px; width: 100%;
 }
 .step-row {
   display: flex; align-items: center; gap: 10px;
-  padding: 8px 14px; border-radius: 8px;
+  padding: 9px 16px; border-radius: 8px;
   font-size: 12px; transition: all .3s;
-  opacity: .35;
+  opacity: .3; color: rgba(255,255,255,.7);
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.06);
 }
-.step-row.done { opacity: 1; background: var(--A-soft); color: #065F46; }
-.step-row.active { opacity: 1; background: var(--D-soft); color: var(--D); font-weight: 600; }
+.step-row.done { opacity: 1; background: rgba(5,150,105,.15); color: #6ee7b7; border-color: rgba(110,231,183,.2); }
+.step-row.active { opacity: 1; background: rgba(96,165,250,.15); color: #93c5fd; border-color: rgba(147,197,253,.25); font-weight: 600; }
 .step-dot {
   width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
 }
-.step-row.done .step-dot { background: var(--A); }
-.step-row.active .step-dot { background: var(--D); animation: pulse .8s ease-in-out infinite; }
+.step-row.done .step-dot { background: #6ee7b7; }
+.step-row.active .step-dot { background: #93c5fd; animation: pulse .8s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: .7; } }
 
 /* ══════════════════════════════════════════
@@ -1043,12 +1066,13 @@ canvas { display: block; }
 
   <!-- Loading -->
   <div class="loading-screen" id="loadingDiv">
-    <div class="dna-wrap">
-      <canvas class="dna-canvas" id="dnaCanvas" width="120" height="200"></canvas>
+    <video id="loadingVideo" autoplay muted loop playsinline preload="auto" src="loading.mp4"></video>
+    <div class="loading-overlay"></div>
+    <div class="loading-content">
+      <div class="loading-brand" id="loadingBrand"></div>
+      <div class="loading-step" id="loadingStep">Initialising diagnosis…</div>
+      <div class="loading-steps" id="loadingSteps"></div>
     </div>
-    <div class="loading-brand" id="loadingBrand"></div>
-    <div class="loading-step" id="loadingStep">Initialising diagnosis…</div>
-    <div class="loading-steps" id="loadingSteps"></div>
   </div>
 
   <!-- Error -->
