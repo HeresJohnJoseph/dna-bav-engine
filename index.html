@@ -1338,28 +1338,38 @@ async function callAI(prompt) {
     return extractText(res);
   }
   if (!_apiKey) throw new Error('No API key set. Reload the page to enter your key.');
-  const resp = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${_apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          maxOutputTokens: 8192,
-          temperature: 0.7,
-          responseMimeType: 'application/json'
-        }
-      })
-    }
-  );
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 90000); // 90s hard timeout
+  let resp;
+  try {
+    resp = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${_apiKey}`,
+      {
+        method: 'POST',
+        signal: controller.signal,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            maxOutputTokens: 8192,
+            temperature: 0.7,
+            responseMimeType: 'application/json'
+          }
+        })
+      }
+    );
+  } catch(e) {
+    clearTimeout(timeout);
+    if (e.name === 'AbortError') throw new Error('Diagnosis timed out. Try again.');
+    throw e;
+  }
+  clearTimeout(timeout);
   const data = await resp.json();
   if (data.error) {
-    if (/leak|invalid|expired/i.test(data.error.message || '')) {
-      localStorage.removeItem('dna_api_key');
-      _apiKey = '';
-    }
-    throw new Error(data.error.message || 'Gemini API error');
+    const msg = data.error.message || 'Gemini API error';
+    if (/leak|invalid|expired/i.test(msg)) { localStorage.removeItem('dna_api_key'); _apiKey = ''; }
+    if (data.error.code === 429) throw new Error('Rate limit reached. Wait 1 minute then try again.');
+    throw new Error(msg);
   }
   return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
