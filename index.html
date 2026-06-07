@@ -1670,6 +1670,7 @@ function selBrandFn(name, year) {
 // ── DNA HELIX ANIMATION ──
 function startDNAAnimation() {
   const canvas = document.getElementById('dnaCanvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let frame = 0;
   const W = 120, H = 200;
@@ -1731,7 +1732,9 @@ function startDNAAnimation() {
 
 function stopDNAAnimation() {
   if (dnaAnimId) { cancelAnimationFrame(dnaAnimId); dnaAnimId = null; }
-  const ctx = document.getElementById('dnaCanvas').getContext('2d');
+  const canvas = document.getElementById('dnaCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
   ctx.clearRect(0,0,120,200);
 }
 
