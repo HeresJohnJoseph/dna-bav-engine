@@ -408,13 +408,36 @@ td.sc { text-align: center; }
   font-family: 'Playfair Display', Georgia, serif;
   font-size: clamp(32px, 5vw, 52px); font-weight: 700;
   letter-spacing: -.6px; color: var(--ink);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 .loading-step {
   font-size: 14px; color: var(--ink2);
   min-height: 20px; transition: opacity .3s;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
+/* ── Progress bar ── */
+.loading-progress-wrap {
+  width: 100%; max-width: 380px;
+  margin-bottom: 8px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.loading-progress-track {
+  width: 100%; height: 4px;
+  background: var(--border);
+  border-radius: 99px; overflow: hidden;
+}
+.loading-progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--D), #7C3AED);
+  border-radius: 99px;
+  transition: width .6s ease;
+}
+.loading-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 11px; color: var(--ink3);
+}
+.loading-pct { font-weight: 700; color: var(--D); font-family: var(--mono); }
+.loading-elapsed { font-family: var(--mono); }
 .loading-steps {
   display: flex; flex-direction: column; gap: 6px;
   max-width: 380px; width: 100%;
@@ -1089,6 +1112,15 @@ canvas { display: block; }
     <div class="loading-content">
       <div class="loading-brand" id="loadingBrand"></div>
       <div class="loading-step" id="loadingStep">Initialising diagnosis…</div>
+      <div class="loading-progress-wrap">
+        <div class="loading-progress-track">
+          <div class="loading-progress-fill" id="loadingBar"></div>
+        </div>
+        <div class="loading-meta">
+          <span class="loading-pct" id="loadingPct">0%</span>
+          <span class="loading-elapsed" id="loadingElapsed">0s</span>
+        </div>
+      </div>
       <div class="loading-steps" id="loadingSteps"></div>
     </div>
   </div>
@@ -1812,7 +1844,31 @@ async function runDx() {
 
   startDNAAnimation();
 
-  // Animate steps
+  // ── Progress bar + elapsed timer ──
+  const barEl  = document.getElementById('loadingBar');
+  const pctEl  = document.getElementById('loadingPct');
+  const timeEl = document.getElementById('loadingElapsed');
+  const startTs = Date.now();
+  let   pct = 0;
+  let   apiDone = false;
+
+  // Elapsed counter (every second)
+  const elapsedInt = setInterval(() => {
+    timeEl.textContent = Math.floor((Date.now() - startTs) / 1000) + 's';
+  }, 1000);
+
+  // Smooth progress: advances quickly early, crawls near 92%, stops there until API returns
+  const barInt = setInterval(() => {
+    if (apiDone) return;
+    const ceiling = 92;               // never hits 100 until real response
+    const gap = ceiling - pct;
+    pct += gap * 0.06;                // exponential ease — fast start, slow near ceiling
+    if (pct >= ceiling) pct = ceiling;
+    barEl.style.width = pct.toFixed(1) + '%';
+    pctEl.textContent = Math.floor(pct) + '%';
+  }, 400);
+
+  // Animate steps every 1800ms
   let si = 0;
   const stepInt = setInterval(()=>{
     if(si>0) document.getElementById('step'+(si-1))?.classList.replace('active','done');
@@ -1822,9 +1878,20 @@ async function runDx() {
     if(si>=DIAG_STEPS.length) clearInterval(stepInt);
   }, 1800);
 
+  const finishProgress = () => {
+    apiDone = true;
+    clearInterval(barInt);
+    clearInterval(elapsedInt);
+    pct = 100;
+    barEl.style.width = '100%';
+    pctEl.textContent = '100%';
+    timeEl.textContent = Math.floor((Date.now() - startTs) / 1000) + 's';
+  };
+
   try {
     const raw = await callAI(prompt);
     clearInterval(stepInt);
+    finishProgress();
     // Mark all steps done
     DIAG_STEPS.forEach((_,i)=>{ const el=document.getElementById('step'+i); if(el){el.classList.remove('active');el.classList.add('done');} });
 
@@ -1839,6 +1906,7 @@ async function runDx() {
     renderResults(data, t, yoyData);
   } catch(err) {
     clearInterval(stepInt);
+    finishProgress();
     stopDNAAnimation();
     loadDiv.classList.remove('on');
     document.getElementById('brandsDiv').style.display='block';
