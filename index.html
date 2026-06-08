@@ -231,82 +231,49 @@ button { font-family: var(--font); cursor: pointer; }
   background: rgba(255,255,255,.07);
   backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(255,255,255,.14);
+  border-top: 3px solid rgba(255,255,255,.25);
   border-radius: 16px;
   margin-bottom: 14px;
-  overflow: hidden;
+  padding: 20px 24px;
+  box-shadow: 0 4px 40px rgba(0,0,0,.25);
 }
-.fount-hd {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 20px; cursor: pointer; user-select: none;
-  gap: 12px;
+.fount-title {
+  font-size: 13px; font-weight: 700; color: #fff;
+  margin-bottom: 4px;
 }
-.fount-hd:hover { background: rgba(255,255,255,.05); }
-.fount-hd-left { display: flex; align-items: center; gap: 10px; }
-.fount-icon {
-  width: 32px; height: 32px; border-radius: 8px;
-  background: linear-gradient(135deg, #F0047F, #7C3AED);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px; flex-shrink: 0;
+.fount-sub {
+  font-size: 12px; color: rgba(255,255,255,.45);
+  margin-bottom: 16px;
 }
-.fount-hd-title { font-size: 13px; font-weight: 700; color: #fff; }
-.fount-hd-sub { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 1px; }
-.fount-chevron {
-  color: rgba(255,255,255,.4); font-size: 12px;
-  transition: transform .25s; flex-shrink: 0;
-}
-.fount-panel.open .fount-chevron { transform: rotate(180deg); }
-.fount-body { display: none; padding: 0 20px 20px; }
-.fount-panel.open .fount-body { display: block; }
-.fount-divider { height: 1px; background: rgba(255,255,255,.1); margin-bottom: 16px; }
-.fount-label {
-  font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .1em; color: rgba(255,255,255,.4); margin-bottom: 8px;
-}
-.fount-cat-row { display: flex; gap: 8px; margin-bottom: 16px; }
-.fount-cat-input {
-  flex: 1; height: 38px; border-radius: 8px;
+.fount-row { display: flex; gap: 8px; align-items: stretch; }
+.fount-select {
+  flex: 1; height: 42px;
+  background: rgba(255,255,255,.08);
   border: 1px solid rgba(255,255,255,.2);
-  background: rgba(255,255,255,.08); color: #fff;
-  padding: 0 12px; font-size: 13px; outline: none;
+  border-radius: 8px;
+  color: #fff; font-size: 13px;
+  padding: 0 12px;
+  outline: none; cursor: pointer;
   font-family: var(--font);
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
 }
-.fount-cat-input::placeholder { color: rgba(255,255,255,.3); }
-.fount-cat-input:focus { border-color: #F0047F; }
-.fount-copy-btn {
-  height: 38px; padding: 0 16px;
+.fount-select:focus { border-color: #F0047F; }
+.fount-select option { background: #1a1040; color: #fff; }
+.fount-run-btn {
+  height: 42px; padding: 0 20px;
   background: #F0047F; color: #fff;
   border: none; border-radius: 8px;
-  font-size: 12px; font-weight: 700;
+  font-size: 13px; font-weight: 700;
   cursor: pointer; white-space: nowrap;
-  transition: all .15s; letter-spacing: .04em;
-  text-transform: uppercase;
+  transition: all .15s; letter-spacing: .02em;
+  display: flex; align-items: center; gap: 6px;
 }
-.fount-copy-btn:hover { background: #D4036E; }
-.fount-copy-btn.copied { background: #059669; }
-.fount-steps {
-  display: flex; flex-direction: column; gap: 7px;
-  margin-bottom: 14px;
-}
-.fount-step {
-  display: flex; align-items: flex-start; gap: 10px;
-  font-size: 12px; color: rgba(255,255,255,.65); line-height: 1.5;
-}
-.fount-step-num {
-  min-width: 20px; height: 20px; border-radius: 50%;
-  background: rgba(255,255,255,.12);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 800; color: rgba(255,255,255,.7);
-  flex-shrink: 0; margin-top: 1px;
-}
-.fount-link {
-  display: inline-flex; align-items: center; gap: 6px;
-  height: 34px; padding: 0 14px;
-  border: 1px solid rgba(255,255,255,.2);
-  border-radius: 8px; font-size: 12px; font-weight: 600;
-  color: rgba(255,255,255,.7); background: rgba(255,255,255,.05);
-  text-decoration: none; transition: all .15s;
-}
-.fount-link:hover { border-color: rgba(255,255,255,.4); color: #fff; background: rgba(255,255,255,.1); }
+.fount-run-btn:hover { background: #D4036E; transform: translateY(-1px); }
+.fount-run-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
 
 .sess-divider {
   display: flex; align-items: center; gap: 12px;
@@ -1120,35 +1087,58 @@ canvas { display: block; }
     <div class="upload-area">
 
       <!-- Fount extractor -->
-      <div class="fount-panel" id="fountPanel">
-        <div class="fount-hd" onclick="toggleFount()">
-          <div class="fount-hd-left">
-            <div class="fount-icon">⬇</div>
-            <div>
-              <div class="fount-hd-title">Extract data from Fount</div>
-              <div class="fount-hd-sub">Get your BAV CSV using Claude in Chrome</div>
-            </div>
-          </div>
-          <span class="fount-chevron">▼</span>
-        </div>
-        <div class="fount-body">
-          <div class="fount-divider"></div>
-          <div class="fount-label">Step 1 — Enter your category</div>
-          <div class="fount-cat-row">
-            <input class="fount-cat-input" id="fountCat" placeholder="e.g. Banks, Automobiles, Insurance Companies…" />
-            <button class="fount-copy-btn" id="fountCopyBtn" onclick="copyFountPrompt()">Copy prompt</button>
-          </div>
-          <div class="fount-label">Step 2 — Run in Claude</div>
-          <div class="fount-steps">
-            <div class="fount-step"><div class="fount-step-num">1</div><span>Open Claude Code or a new Claude chat with the <strong style="color:#fff;">Claude in Chrome</strong> extension active</span></div>
-            <div class="fount-step"><div class="fount-step-num">2</div><span>Make sure you're logged in to <strong style="color:#fff;">fount.wppbav.com</strong></span></div>
-            <div class="fount-step"><div class="fount-step-num">3</div><span>Paste the prompt — Claude will navigate Fount, select the right metrics, and trigger the CSV export</span></div>
-            <div class="fount-step"><div class="fount-step-num">4</div><span>Download the CSV from your email or Fount downloads, then upload it below</span></div>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <a class="fount-link" href="https://fount.wppbav.com/raw-data/brand-categories" target="_blank">↗ Open Fount</a>
-            <a class="fount-link" href="https://fount.wppbav.com" target="_blank">↗ Fount home</a>
-          </div>
+      <div class="fount-panel">
+        <div class="fount-title">Extract from Fount</div>
+        <div class="fount-sub">SA 2023 + 2025 · All Adults · Pillars + Innovation</div>
+        <div class="fount-row">
+          <select class="fount-select" id="fountCat">
+            <option value="">Select a category…</option>
+            <optgroup label="Apparel &amp; Accessories">
+              <option>Apparel &amp; Accessories</option><option>Footwear</option><option>Luxury Goods</option><option>Sporting Goods &amp; Apparel</option>
+            </optgroup>
+            <optgroup label="Auto">
+              <option>Automobiles</option><option>Car Insurance</option><option>Car Rental</option><option>Motorcycles</option><option>Tyres</option>
+            </optgroup>
+            <optgroup label="Beverages – Alcoholic">
+              <option>Beer</option><option>Champagnes &amp; Sparkling Wines</option><option>Ciders &amp; Coolers</option><option>Spirits</option><option>Wines</option>
+            </optgroup>
+            <optgroup label="Beverages – Non-Alcoholic">
+              <option>Bottled Water</option><option>Carbonated Soft Drinks</option><option>Coffee</option><option>Energy Drinks</option><option>Fruit Juice</option><option>Hot Beverages</option><option>Sports Drinks</option><option>Tea</option>
+            </optgroup>
+            <optgroup label="Financial Services, Insurance &amp; Banks">
+              <option>Banks</option><option>Credit Cards</option><option>Insurance Companies</option><option>Investment &amp; Asset Management</option><option>Life Insurance</option><option>Medical Aid</option><option>Micro-lending &amp; Short-term Finance</option><option>Retirement Funds &amp; Annuities</option><option>Short-term Insurance</option>
+            </optgroup>
+            <optgroup label="Food">
+              <option>Baked Goods</option><option>Breakfast Cereals</option><option>Confectionery</option><option>Cooking Oils &amp; Fats</option><option>Dairy</option><option>Fast Food &amp; QSR</option><option>Frozen Foods</option><option>Restaurants &amp; Casual Dining</option><option>Snack Foods</option><option>Sugar &amp; Sweeteners</option>
+            </optgroup>
+            <optgroup label="Health &amp; Beauty">
+              <option>Cosmetics &amp; Skincare</option><option>Deodorants</option><option>Hair Care</option><option>Oral Care</option><option>Personal Care</option><option>Pharmaceuticals &amp; Health Products</option>
+            </optgroup>
+            <optgroup label="Home &amp; Garden">
+              <option>Cleaning Products</option><option>Home Appliances</option><option>Home Improvement &amp; DIY</option><option>Household Products</option>
+            </optgroup>
+            <optgroup label="Media &amp; Entertainment">
+              <option>Gaming</option><option>Music Streaming</option><option>Newspapers &amp; Magazines</option><option>Pay TV &amp; Streaming</option><option>Radio &amp; Podcasts</option><option>Social Media</option>
+            </optgroup>
+            <optgroup label="Retail">
+              <option>Department Stores</option><option>Fashion Retail</option><option>Food Retail &amp; Grocery</option><option>Furniture &amp; Home Décor</option><option>Online Retail &amp; E-commerce</option><option>Pharmacy &amp; Health Retail</option><option>Wholesale &amp; Warehouse Clubs</option>
+            </optgroup>
+            <optgroup label="Technology &amp; Electronics">
+              <option>Consumer Electronics</option><option>Internet Service Providers</option><option>Mobile Devices &amp; Smartphones</option><option>Software &amp; Apps</option>
+            </optgroup>
+            <optgroup label="Telecoms">
+              <option>Mobile Network Operators</option><option>Telecommunication Companies</option>
+            </optgroup>
+            <optgroup label="Travel &amp; Hospitality">
+              <option>Airlines</option><option>Hotels &amp; Accommodation</option><option>Online Travel Agencies</option><option>Tourism</option>
+            </optgroup>
+            <optgroup label="Utilities &amp; Public Services">
+              <option>Energy &amp; Utilities</option><option>Government &amp; Public Services</option><option>Logistics &amp; Courier</option><option>Petrol &amp; Fuel Retail</option>
+            </optgroup>
+          </select>
+          <button class="fount-run-btn" id="fountRunBtn" onclick="runFountExtraction()" disabled>
+            ▶ Run
+          </button>
         </div>
       </div>
 
@@ -1576,8 +1566,89 @@ function extractText(res) {
 }
 
 // ── FOUNT EXTRACTOR ──
-function toggleFount() {
-  document.getElementById('fountPanel').classList.toggle('open');
+document.addEventListener('DOMContentLoaded', () => {
+  const sel = document.getElementById('fountCat');
+  const btn = document.getElementById('fountRunBtn');
+  if (sel && btn) sel.addEventListener('change', () => { btn.disabled = !sel.value; });
+});
+
+function runFountExtraction() {
+  const cat = document.getElementById('fountCat').value;
+  if (!cat) return;
+  const prompt = buildFountPrompt(cat);
+  navigator.clipboard.writeText(prompt).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = prompt; ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+  window.open('https://fount.wppbav.com/raw-data/brand-categories', '_blank');
+  const btn = document.getElementById('fountRunBtn');
+  btn.textContent = '✓ Prompt copied — paste into Claude';
+  btn.style.background = '#059669'; btn.disabled = true;
+  setTimeout(() => { btn.innerHTML = '▶ Run'; btn.style.background = ''; btn.disabled = false; }, 4000);
+}
+
+function buildFountPrompt(cat) {
+  return `You are a browser automation agent. Your job is to extract BAV data from fount.wppbav.com for a specific category and export it as a CSV. Follow every step exactly. Do not skip verification. If anything looks wrong at any step, stop and report the issue clearly before continuing.
+
+FIXED PARAMETERS (never change these)
+- Site: https://fount.wppbav.com/raw-data/brand-categories
+- Studies: South Africa 2023 AND South Africa 2025 (both must be selected)
+- Audience: All Adults
+- Metrics — Pillars/Equity: SELECT ALL (Differentiation, Relevance, Esteem, Knowledge)
+- Metrics — Influence: SELECT Innovation ONLY
+- Export format: CSV
+
+VARIABLE PARAMETER
+- Category: ${cat}
+
+PRE-FLIGHT CHECKS
+1. Take a screenshot. Confirm the Chrome extension is active.
+   If not → STOP: "Claude in Chrome extension is not connected."
+2. Navigate to https://fount.wppbav.com. If you see a login page → STOP: "You are not logged into Fount. Please log in and try again."
+3. Navigate to https://fount.wppbav.com/raw-data/brand-categories. Confirm the page title contains "Explore Categories".
+
+STEP 1 — OPEN NEW QUERY
+Click "Create new" (top right of the Previous Queries section). A modal titled "New Explore Categories" should appear.
+✅ Verify: Modal open, on step 1 (Studies).
+
+STEP 2 — SELECT STUDIES
+Type "South Africa" in the modal search field. Click "2025" then "2023".
+✅ Verify: "Selected Studies" shows both "South Africa 2023 ×" and "South Africa 2025 ×".
+Click "Proceed to Audiences →".
+
+STEP 3 — SELECT AUDIENCE
+If "All Adults" is already selected → proceed. If not → click "All Adults".
+✅ Verify: "Selected Audiences" shows "All Adults ×".
+Click "Proceed to Categories →".
+
+STEP 4 — SELECT CATEGORY: ${cat}
+Scan the parent category list, expand the relevant parent, click "+" next to "${cat}".
+✅ Verify: "Selected Categories" shows "${cat} ×".
+If not found → STOP and list available parent categories.
+Click "Proceed to Metrics →".
+
+STEP 5 — SELECT METRICS
+ACTION A — Find the "Pillars / Equity" section. Click its "Select All" (NOT the global one at top).
+✅ Verify: Differentiation ✓ Relevance ✓ Esteem ✓ Knowledge ✓
+
+ACTION B — Find the "Influence" section. Click "Innovation" only.
+✅ Verify: Only Innovation is checked in that section.
+
+Click "Create →".
+
+STEP 6 — EXPORT AS CSV
+✅ Verify page title: "${cat} in South Africa 2023, South Africa 2025 (All Adults)"
+Click "Export" → "CSV".
+✅ Verify: Export confirmation notification appears.
+
+COMPLETION REPORT
+✅ BAV extraction complete for: ${cat}
+Studies: South Africa 2023 + 2025 | Audience: All Adults
+Metrics: Differentiation, Relevance, Esteem, Knowledge + Innovation
+CSV will arrive by email or in your Fount downloads.
+Next step: return to the DNA BAV Engine and upload the CSV.`;
 }
 
 function copyFountPrompt() {
