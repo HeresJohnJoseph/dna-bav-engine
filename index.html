@@ -225,6 +225,89 @@ button { font-family: var(--font); cursor: pointer; }
 .mpill-dot.D { background: var(--D); }
 .mpill-dot.N { background: var(--N); }
 .mpill-dot.A { background: var(--A); }
+/* ── Fount extractor panel ── */
+.fount-panel {
+  width: 100%; max-width: 540px;
+  background: rgba(255,255,255,.07);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 16px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.fount-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; cursor: pointer; user-select: none;
+  gap: 12px;
+}
+.fount-hd:hover { background: rgba(255,255,255,.05); }
+.fount-hd-left { display: flex; align-items: center; gap: 10px; }
+.fount-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, #F0047F, #7C3AED);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.fount-hd-title { font-size: 13px; font-weight: 700; color: #fff; }
+.fount-hd-sub { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 1px; }
+.fount-chevron {
+  color: rgba(255,255,255,.4); font-size: 12px;
+  transition: transform .25s; flex-shrink: 0;
+}
+.fount-panel.open .fount-chevron { transform: rotate(180deg); }
+.fount-body { display: none; padding: 0 20px 20px; }
+.fount-panel.open .fount-body { display: block; }
+.fount-divider { height: 1px; background: rgba(255,255,255,.1); margin-bottom: 16px; }
+.fount-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: rgba(255,255,255,.4); margin-bottom: 8px;
+}
+.fount-cat-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.fount-cat-input {
+  flex: 1; height: 38px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.08); color: #fff;
+  padding: 0 12px; font-size: 13px; outline: none;
+  font-family: var(--font);
+}
+.fount-cat-input::placeholder { color: rgba(255,255,255,.3); }
+.fount-cat-input:focus { border-color: #F0047F; }
+.fount-copy-btn {
+  height: 38px; padding: 0 16px;
+  background: #F0047F; color: #fff;
+  border: none; border-radius: 8px;
+  font-size: 12px; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+  transition: all .15s; letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.fount-copy-btn:hover { background: #D4036E; }
+.fount-copy-btn.copied { background: #059669; }
+.fount-steps {
+  display: flex; flex-direction: column; gap: 7px;
+  margin-bottom: 14px;
+}
+.fount-step {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 12px; color: rgba(255,255,255,.65); line-height: 1.5;
+}
+.fount-step-num {
+  min-width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800; color: rgba(255,255,255,.7);
+  flex-shrink: 0; margin-top: 1px;
+}
+.fount-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 34px; padding: 0 14px;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 8px; font-size: 12px; font-weight: 600;
+  color: rgba(255,255,255,.7); background: rgba(255,255,255,.05);
+  text-decoration: none; transition: all .15s;
+}
+.fount-link:hover { border-color: rgba(255,255,255,.4); color: #fff; background: rgba(255,255,255,.1); }
+
 .sess-divider {
   display: flex; align-items: center; gap: 12px;
   color: rgba(255,255,255,.25); font-size: 12px; margin: 18px 0;
@@ -1035,6 +1118,40 @@ canvas { display: block; }
     </div>
 
     <div class="upload-area">
+
+      <!-- Fount extractor -->
+      <div class="fount-panel" id="fountPanel">
+        <div class="fount-hd" onclick="toggleFount()">
+          <div class="fount-hd-left">
+            <div class="fount-icon">⬇</div>
+            <div>
+              <div class="fount-hd-title">Extract data from Fount</div>
+              <div class="fount-hd-sub">Get your BAV CSV using Claude in Chrome</div>
+            </div>
+          </div>
+          <span class="fount-chevron">▼</span>
+        </div>
+        <div class="fount-body">
+          <div class="fount-divider"></div>
+          <div class="fount-label">Step 1 — Enter your category</div>
+          <div class="fount-cat-row">
+            <input class="fount-cat-input" id="fountCat" placeholder="e.g. Banks, Automobiles, Insurance Companies…" />
+            <button class="fount-copy-btn" id="fountCopyBtn" onclick="copyFountPrompt()">Copy prompt</button>
+          </div>
+          <div class="fount-label">Step 2 — Run in Claude</div>
+          <div class="fount-steps">
+            <div class="fount-step"><div class="fount-step-num">1</div><span>Open Claude Code or a new Claude chat with the <strong style="color:#fff;">Claude in Chrome</strong> extension active</span></div>
+            <div class="fount-step"><div class="fount-step-num">2</div><span>Make sure you're logged in to <strong style="color:#fff;">fount.wppbav.com</strong></span></div>
+            <div class="fount-step"><div class="fount-step-num">3</div><span>Paste the prompt — Claude will navigate Fount, select the right metrics, and trigger the CSV export</span></div>
+            <div class="fount-step"><div class="fount-step-num">4</div><span>Download the CSV from your email or Fount downloads, then upload it below</span></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <a class="fount-link" href="https://fount.wppbav.com/raw-data/brand-categories" target="_blank">↗ Open Fount</a>
+            <a class="fount-link" href="https://fount.wppbav.com" target="_blank">↗ Fount home</a>
+          </div>
+        </div>
+      </div>
+
       <div class="drop-zone" id="dropZ" onclick="document.getElementById('fi').click()" ondragover="doDrag(event,true)" ondragleave="doDrag(event,false)" ondrop="doDrop(event)">
         <div class="drop-title" style="margin-top:4px;">Drop your BAV CSV here</div>
         <div class="drop-sub">Export from <strong>fount.wppbav.com</strong> → Raw Data → By Categories<br>Select Pillars/Equity (all) + Innovation. Export as CSV.</div>
@@ -1456,6 +1573,192 @@ function extractText(res) {
   if (res.text) return res.text;
   if (res.completion) return res.completion;
   return JSON.stringify(res);
+}
+
+// ── FOUNT EXTRACTOR ──
+function toggleFount() {
+  document.getElementById('fountPanel').classList.toggle('open');
+}
+
+function copyFountPrompt() {
+  const cat = document.getElementById('fountCat').value.trim() || '{{CATEGORY}}';
+  const btn = document.getElementById('fountCopyBtn');
+
+  const prompt = `You are a browser automation agent. Your job is to extract BAV data from fount.wppbav.com for a specific category and export it as a CSV. Follow every step exactly. Do not skip verification. If anything looks wrong at any step, stop and report the issue clearly before continuing.
+
+---
+
+## FIXED PARAMETERS (never change these)
+- Site: https://fount.wppbav.com/raw-data/brand-categories
+- Studies: South Africa 2023 AND South Africa 2025 (both must be selected)
+- Audience: All Adults
+- Metrics — Pillars/Equity: SELECT ALL (Differentiation, Relevance, Esteem, Knowledge)
+- Metrics — Influence: SELECT Innovation ONLY
+- Export format: CSV
+
+## VARIABLE PARAMETER (set by the user)
+- Category: ${cat}
+
+---
+
+## PRE-FLIGHT CHECKS
+
+Before touching anything, do these three checks:
+
+1. Take a screenshot. Confirm the Chrome extension is active and you can see the browser.
+   If not → STOP. Tell the user: "Claude in Chrome extension is not connected. Please ensure it is installed and active, then try again."
+
+2. Navigate to https://fount.wppbav.com. Take a screenshot.
+   - If you see a login page or are redirected to an auth screen → STOP. Tell the user: "You are not logged into Fount. Please log in at fount.wppbav.com and then run this again."
+   - If you see a dashboard or any authenticated page → proceed.
+
+3. Navigate to https://fount.wppbav.com/raw-data/brand-categories. Take a screenshot.
+   Confirm the page title contains "Explore Categories". If not → STOP and report the URL you landed on.
+
+---
+
+## STEP 1 — OPEN NEW QUERY
+
+Look for "Create new" (top right of the Previous Queries section) and click it.
+A modal titled "New Explore Categories" should appear with a step indicator showing steps: Studies → Audiences → Categories → Metrics.
+
+✅ Verify: Modal is open and you are on step 1 (Studies).
+❌ If modal does not open: try clicking the "+ Create" button in the top right of the page instead. Take a screenshot and retry once. If still failing, STOP and report.
+
+---
+
+## STEP 2 — SELECT STUDIES
+
+In the search field (top right of the modal), type "South Africa".
+Wait for results to filter. You should see "South Africa" with years: 2025, 2023, 2022, 2010, 1993.
+
+Click "2025" for South Africa — it should highlight/show a checkmark.
+Click "2023" for South Africa — it should highlight/show a checkmark.
+
+✅ Verify: At the top of the modal, "Selected Studies" shows two chips: "South Africa 2023 ×" and "South Africa 2025 ×".
+
+❌ If only one year appears in the list: STOP. Report which years were found.
+❌ If no South Africa results appear: clear the search, try typing "South" only. If still nothing, STOP and report.
+
+Click "Proceed to Audiences →".
+
+---
+
+## STEP 3 — SELECT AUDIENCE
+
+The modal moves to step 2 (Audiences). Look at "Selected Audiences" at the top.
+
+CHECK: Is "All Adults" already pre-selected (shown as a chip)?
+- YES → do not click anything. Proceed directly to "Proceed to Categories →".
+- NO → Find the "All" section. Click "All Adults". Confirm it appears as a selected chip.
+
+✅ Verify: "Selected Audiences" shows "All Adults ×".
+❌ If "All Adults" is not visible in the list, scroll up. If still missing, STOP and report.
+
+Click "Proceed to Categories →".
+
+---
+
+## STEP 4 — SELECT CATEGORY
+
+The modal moves to step 3 (Categories). Your target category is: ${cat}
+
+To find the correct parent and subcategory:
+- Scan the list for a parent that logically contains "${cat}".
+- Click the expand arrow (›) on that parent to reveal its subcategories.
+- Click the "+" button next to "${cat}" to select it.
+
+Common mappings for reference:
+  - "Automobiles" → expand "Auto" → select "Automobiles"
+  - "Insurance Companies" → expand "Financial Services, Insurance & Banks" → select "Insurance Companies"
+  - "Banks" → expand "Financial Services, Insurance & Banks" → select "Banks"
+  - "Champagnes & Sparkling Wines" → expand "Beverages - Alcoholic" → select subcategory
+
+✅ Verify: "Selected Categories" at the top of the modal shows "${cat} ×".
+
+❌ If you cannot find "${cat}" in any parent group: STOP. Report available parent categories and ask user to confirm the correct name.
+
+Click "Proceed to Metrics →".
+
+---
+
+## STEP 5 — SELECT METRICS
+
+The modal moves to step 4 (Metrics). Do TWO actions only:
+
+### ACTION A — Pillars / Equity: Select All
+Scroll until you see the "Pillars / Equity" section (Differentiation, Relevance, Esteem, Knowledge).
+Click "Select All" directly under the Pillars / Equity section — NOT the global "Select All" at the top.
+
+✅ Verify: All four chips show a checkmark. "Deselect All" appears in that section.
+❌ If you accidentally clicked the global "Select All": click "Deselect All" at the top to reset, then retry.
+
+### ACTION B — Influence: Select Innovation only
+Scroll down to the "Influence" section. Click "Innovation" only. Do NOT click "Select All".
+
+✅ Verify: Only "Innovation" in the Influence section shows a checkmark.
+❌ If you accidentally selected others: click them to deselect, leaving only Innovation.
+
+### FINAL METRICS VERIFICATION
+- Pillars/Equity: Differentiation ✓, Relevance ✓, Esteem ✓, Knowledge ✓
+- Influence: Innovation ✓ (only this one)
+- Everything else: unselected
+
+Click "Create →".
+
+---
+
+## STEP 6 — EXPORT AS CSV
+
+The modal closes. You should now be on the results page titled:
+"${cat} in South Africa 2023, South Africa 2025 (All Adults)"
+
+✅ Verify: The page title matches and you can see a data table with brand rows and metric columns.
+❌ If the page title does not match or the table is empty: STOP and report what you see.
+
+Now export:
+1. Click the "Export" button (top right, next to "Audience Profile").
+2. A dropdown appears with "Excel" and "CSV".
+3. Click "CSV".
+
+✅ Verify: A notification appears saying "Your export is being prepared" or similar.
+❌ If the dropdown does not appear: take a screenshot, wait 2 seconds, try again once.
+
+---
+
+## COMPLETION REPORT
+
+Once the export is triggered, report back with this summary:
+
+---
+✅ BAV data extraction complete for: ${cat}
+
+Studies selected: South Africa 2023 + South Africa 2025
+Audience: All Adults
+Metrics: Differentiation, Relevance, Esteem, Knowledge + Innovation
+
+Your CSV export is being prepared by Fount. It will be:
+• Sent to your registered email in a few minutes
+• Available in your browser downloads once ready
+
+Next step: return to the DNA BAV Engine and upload the CSV.
+---
+
+If any step failed, report: which step failed, what was on screen, what you tried, and what the user should do to fix it.`;
+
+  navigator.clipboard.writeText(prompt).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 2500);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = prompt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ Copied!'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 2500);
+  });
 }
 
 // ── KEY SCREEN ──
