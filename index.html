@@ -1572,88 +1572,129 @@ document.addEventListener('DOMContentLoaded', () => {
   if (sel && btn) sel.addEventListener('change', () => { btn.disabled = !sel.value; });
 });
 
-function runFountExtraction() {
+async function runFountExtraction() {
   const cat = document.getElementById('fountCat').value;
   if (!cat) return;
-  const prompt = buildFountPrompt(cat);
-  navigator.clipboard.writeText(prompt).catch(() => {
-    const ta = document.createElement('textarea');
-    ta.value = prompt; ta.style.cssText = 'position:fixed;opacity:0';
-    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
-    document.body.removeChild(ta);
-  });
-  window.open('https://fount.wppbav.com/raw-data/brand-categories', '_blank');
   const btn = document.getElementById('fountRunBtn');
-  btn.textContent = '✓ Prompt copied — paste into Claude';
-  btn.style.background = '#059669'; btn.disabled = true;
-  setTimeout(() => { btn.innerHTML = '▶ Run'; btn.style.background = ''; btn.disabled = false; }, 4000);
+
+  if (IS_COWORK) {
+    // ── Cowork: actually run the browser automation and receive CSV back ──
+    btn.innerHTML = '⏳ Extracting…'; btn.disabled = true;
+    btn.style.background = '#7C3AED';
+    try {
+      const result = await window.cowork.askClaude(buildFountPrompt(cat), []);
+      const csvText = extractCSVFromCoworkResult(result);
+      if (!csvText) throw new Error('No CSV data returned. Check Fount is logged in and the category exists.');
+      btn.innerHTML = '✓ Loaded!'; btn.style.background = '#059669';
+      parseCSV(csvText, cat.replace(/\s+/g,'_') + '_bav.csv');
+      setTimeout(() => { btn.innerHTML = '▶ Run'; btn.style.background = ''; btn.disabled = false; }, 3000);
+    } catch(err) {
+      btn.innerHTML = '✗ Failed'; btn.style.background = '#DC2626'; btn.disabled = false;
+      setStatus('err', 'Fount extraction failed', err.message);
+      setTimeout(() => { btn.innerHTML = '▶ Run'; btn.style.background = ''; }, 4000);
+    }
+  } else {
+    // ── Web mode: open Fount + show a clear nudge ──
+    window.open('https://fount.wppbav.com/raw-data/brand-categories', '_blank');
+    btn.innerHTML = '↗ Fount opened'; btn.style.background = '#059669'; btn.disabled = true;
+    setStatus('info',
+      'Run this in Claude Code (Cowork) for one-click extraction',
+      'In web mode: extract the CSV from Fount manually, then upload it below.'
+    );
+    setTimeout(() => { btn.innerHTML = '▶ Run'; btn.style.background = ''; btn.disabled = false; }, 4000);
+  }
+}
+
+function extractCSVFromCoworkResult(result) {
+  // Cowork result may be a string, array of content blocks, or object
+  let text = '';
+  if (typeof result === 'string') text = result;
+  else if (Array.isArray(result)) text = result.map(b => (typeof b === 'string' ? b : b?.text || '')).join('');
+  else if (result?.content) text = extractCSVFromCoworkResult(result.content);
+  else if (result?.text) text = result.text;
+  else text = JSON.stringify(result);
+
+  // Extract CSV block if wrapped in ```csv ... ``` or ```...```
+  const fenced = text.match(/```(?:csv)?\s*\n?([\s\S]+?)```/);
+  if (fenced) return fenced[1].trim();
+
+  // Look for lines that look like CSV (has commas, starts with header-like content)
+  const lines = text.split('\n');
+  const csvStart = lines.findIndex(l => /brand|Brand|BRAND/i.test(l) && l.includes(','));
+  if (csvStart >= 0) return lines.slice(csvStart).join('\n').trim();
+
+  return null;
 }
 
 function buildFountPrompt(cat) {
-  return `You are a browser automation agent. Your job is to extract BAV data from fount.wppbav.com for a specific category and export it as a CSV. Follow every step exactly. Do not skip verification. If anything looks wrong at any step, stop and report the issue clearly before continuing.
+  return `You are a browser automation agent extracting BAV data from fount.wppbav.com. Your FINAL DELIVERABLE is the raw CSV text returned in your response — NOT a file download or email export. Follow every step exactly.
 
-FIXED PARAMETERS (never change these)
-- Site: https://fount.wppbav.com/raw-data/brand-categories
-- Studies: South Africa 2023 AND South Africa 2025 (both must be selected)
-- Audience: All Adults
-- Metrics — Pillars/Equity: SELECT ALL (Differentiation, Relevance, Esteem, Knowledge)
-- Metrics — Influence: SELECT Innovation ONLY
-- Export format: CSV
+TARGET CATEGORY: ${cat}
+STUDIES: South Africa 2023 + South Africa 2025
+AUDIENCE: All Adults
+METRICS: Differentiation, Relevance, Esteem, Knowledge (all Pillars/Equity) + Innovation (Influence only)
 
-VARIABLE PARAMETER
-- Category: ${cat}
+── PRE-FLIGHT ──
+1. Screenshot to confirm Chrome extension is active. If not → STOP: "Chrome extension not connected."
+2. Navigate to https://fount.wppbav.com — if login page → STOP: "Not logged into Fount."
+3. Navigate to https://fount.wppbav.com/raw-data/brand-categories — confirm "Explore Categories" title.
 
-PRE-FLIGHT CHECKS
-1. Take a screenshot. Confirm the Chrome extension is active.
-   If not → STOP: "Claude in Chrome extension is not connected."
-2. Navigate to https://fount.wppbav.com. If you see a login page → STOP: "You are not logged into Fount. Please log in and try again."
-3. Navigate to https://fount.wppbav.com/raw-data/brand-categories. Confirm the page title contains "Explore Categories".
+── STEP 1: OPEN QUERY ──
+Click "Create new" (top right of Previous Queries). Modal "New Explore Categories" opens.
 
-STEP 1 — OPEN NEW QUERY
-Click "Create new" (top right of the Previous Queries section). A modal titled "New Explore Categories" should appear.
-✅ Verify: Modal open, on step 1 (Studies).
-
-STEP 2 — SELECT STUDIES
-Type "South Africa" in the modal search field. Click "2025" then "2023".
-✅ Verify: "Selected Studies" shows both "South Africa 2023 ×" and "South Africa 2025 ×".
+── STEP 2: STUDIES ──
+Search "South Africa". Select 2025 then 2023.
+Verify: both chips "South Africa 2023 ×" and "South Africa 2025 ×" shown.
 Click "Proceed to Audiences →".
 
-STEP 3 — SELECT AUDIENCE
-If "All Adults" is already selected → proceed. If not → click "All Adults".
-✅ Verify: "Selected Audiences" shows "All Adults ×".
+── STEP 3: AUDIENCE ──
+If "All Adults" already selected → proceed. Else click "All Adults".
 Click "Proceed to Categories →".
 
-STEP 4 — SELECT CATEGORY: ${cat}
-Scan the parent category list, expand the relevant parent, click "+" next to "${cat}".
-✅ Verify: "Selected Categories" shows "${cat} ×".
-If not found → STOP and list available parent categories.
+── STEP 4: CATEGORY ──
+Find "${cat}" in the category tree (expand parent groups as needed). Click "+" to select it.
+Verify: "Selected Categories" shows "${cat} ×". If not found → STOP and list available parents.
 Click "Proceed to Metrics →".
 
-STEP 5 — SELECT METRICS
-ACTION A — Find the "Pillars / Equity" section. Click its "Select All" (NOT the global one at top).
-✅ Verify: Differentiation ✓ Relevance ✓ Esteem ✓ Knowledge ✓
-
-ACTION B — Find the "Influence" section. Click "Innovation" only.
-✅ Verify: Only Innovation is checked in that section.
-
+── STEP 5: METRICS ──
+A) In "Pillars / Equity" section → click that section's "Select All" (NOT the global Select All).
+   Verify: Differentiation ✓ Relevance ✓ Esteem ✓ Knowledge ✓
+B) In "Influence" section → click "Innovation" only.
+   Verify: only Innovation checked.
 Click "Create →".
 
-STEP 6 — EXPORT AS CSV
-✅ Verify page title: "${cat} in South Africa 2023, South Africa 2025 (All Adults)"
-Click "Export" → "CSV".
-✅ Verify: Export confirmation notification appears.
+── STEP 6: SCRAPE THE TABLE ──
+The results page now shows: "${cat} in South Africa 2023, South Africa 2025 (All Adults)"
+You will see a data table with brands as rows and metrics as columns.
 
-COMPLETION REPORT
-✅ BAV extraction complete for: ${cat}
-Studies: South Africa 2023 + 2025 | Audience: All Adults
-Metrics: Differentiation, Relevance, Esteem, Knowledge + Innovation
-CSV will arrive by email or in your Fount downloads.
-Next step: return to the DNA BAV Engine and upload the CSV.`;
+DO NOT click Export or trigger any email/download. Instead:
+
+1. Make sure all rows are visible (scroll through / check for pagination — load all pages).
+2. Use your browser tools to read every row of the table.
+3. Construct CSV text with this exact header row:
+   Brand,Category,Market,Year,Differentiation,Knowledge,Relevance,Esteem,Regard,Innovation
+4. For each brand + year combination, output one row. Use:
+   - Category = "${cat}"
+   - Market = "South Africa"
+   - Year = the study year (2023 or 2025)
+   - Numeric values as shown in the table (keep decimals if present)
+   - If a value is missing/blank, leave the cell empty
+
+── FINAL OUTPUT ──
+Return the complete CSV as a fenced code block:
+
+\`\`\`csv
+Brand,Category,Market,Year,Differentiation,Knowledge,Relevance,Esteem,Regard,Innovation
+[all rows here]
+\`\`\`
+
+Do not include any other text after the CSV block. If extraction fails at any step, report clearly which step failed and what was on screen.`;
 }
 
 function copyFountPrompt() {
-  const cat = document.getElementById('fountCat').value.trim() || '{{CATEGORY}}';
+  const cat = document.getElementById('fountCat')?.value?.trim() || '{{CATEGORY}}';
   const btn = document.getElementById('fountCopyBtn');
+  if (!btn) return;
 
   const prompt = `You are a browser automation agent. Your job is to extract BAV data from fount.wppbav.com for a specific category and export it as a CSV. Follow every step exactly. Do not skip verification. If anything looks wrong at any step, stop and report the issue clearly before continuing.
 
