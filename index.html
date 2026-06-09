@@ -2835,38 +2835,115 @@ async function exportPPT() {
 .rpt-dir-text{font-size:16px;font-weight:600;line-height:1.6;}
 
 /* ── PROJECTIONS ── */
-.proj-inner{background:#FAFAF8;border-radius:20px;width:100%;max-width:1100px;padding:48px 52px;position:relative;}
+.proj-inner{background:#FAFAF8;border-radius:20px;width:100%;max-width:1140px;padding:44px 48px 52px;position:relative;}
+.proj-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:32px;padding-bottom:28px;border-bottom:2px solid #E5E2DC;flex-wrap:wrap;}
 .proj-title{font-size:30px;font-weight:800;letter-spacing:-1px;color:#111;margin-bottom:4px;}
-.proj-sub{font-size:14px;color:#777;margin-bottom:32px;}
-.proj-current{display:flex;gap:20px;margin-bottom:36px;flex-wrap:wrap;}
-.proj-cur-card{background:#F0EDE8;border-radius:10px;padding:14px 20px;text-align:center;flex:1;min-width:100px;}
-.proj-cur-val{font-size:26px;font-weight:800;}
-.proj-cur-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#777;margin-top:2px;}
-.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:36px;}
-@media(max-width:700px){.proj-grid{grid-template-columns:1fr;}}
-.proj-card{border-radius:14px;padding:24px 22px;border:2px solid #E5E2DC;transition:border-color .2s,box-shadow .2s;cursor:pointer;position:relative;}
-.proj-card:hover{border-color:#2563EB;box-shadow:0 4px 18px rgba(37,99,235,.12);}
-.proj-card.active{border-color:#2563EB;box-shadow:0 4px 24px rgba(37,99,235,.18);}
-.proj-card-icon{font-size:28px;margin-bottom:8px;}
-.proj-card-name{font-size:17px;font-weight:800;color:#111;margin-bottom:3px;}
-.proj-card-tagline{font-size:12px;color:#777;margin-bottom:14px;}
-.proj-score-row{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
-.proj-score-item{display:flex;flex-direction:column;align-items:center;background:#F8F7F4;border-radius:8px;padding:8px 12px;min-width:60px;}
-.proj-score-val{font-size:20px;font-weight:800;}
-.proj-score-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#777;}
-.proj-score-delta{font-size:11px;font-weight:700;margin-top:2px;}
-.proj-score-delta.up{color:#059669;}
-.proj-score-delta.dn{color:#DC2626;}
-.proj-score-delta.fl{color:#888;}
-.proj-avg-badge{display:inline-flex;align-items:center;gap:6px;background:#1D3461;color:#fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;margin-bottom:12px;}
-.proj-implication{font-size:12px;color:#444;line-height:1.6;border-top:1px solid #E5E2DC;padding-top:12px;}
-.proj-slider-wrap{margin-top:28px;padding:24px;background:#F0EDE8;border-radius:12px;}
-.proj-slider-title{font-size:13px;font-weight:700;color:#111;margin-bottom:16px;}
-.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.proj-sub{font-size:13px;color:#888;}
+.proj-cur-scores{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+.pcs-chip{display:flex;flex-direction:column;align-items:center;background:#fff;border:1.5px solid #E5E2DC;border-radius:10px;padding:10px 16px;min-width:70px;}
+.pcs-val{font-size:22px;font-weight:800;}
+.pcs-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-top:1px;}
+
+/* split panel */
+.proj-split{display:grid;grid-template-columns:280px 1fr;gap:24px;margin-bottom:28px;}
+@media(max-width:760px){.proj-split{grid-template-columns:1fr;}}
+
+/* scenario tabs */
+.proj-tabs{display:flex;flex-direction:column;gap:8px;}
+.proj-tab{border-radius:12px;padding:16px 18px;border:2px solid #E5E2DC;cursor:pointer;transition:all .18s;background:#fff;}
+.proj-tab:hover{border-color:#A5B4FC;background:#F5F3FF;}
+.proj-tab.active{border-color:#2563EB;background:linear-gradient(135deg,#EFF6FF,#F0F4FF);box-shadow:0 2px 12px rgba(37,99,235,.13);}
+.pt-icon{font-size:22px;margin-bottom:5px;}
+.pt-name{font-size:14px;font-weight:800;color:#111;line-height:1.2;}
+.pt-tag{font-size:11px;color:#777;margin-top:2px;}
+.pt-lift{display:inline-block;font-size:11px;font-weight:700;color:#059669;background:#D1FAE5;border-radius:10px;padding:2px 8px;margin-top:5px;}
+
+/* detail panel */
+.proj-detail{display:flex;flex-direction:column;gap:20px;}
+.proj-detail-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.pd-scenario-name{font-size:22px;font-weight:800;color:#111;margin-bottom:2px;}
+.pd-tagline{font-size:13px;color:#666;font-style:italic;}
+.pd-dna-badge{background:linear-gradient(135deg,#1D3461,#2563EB);color:#fff;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:800;white-space:nowrap;}
+.pd-dna-delta{opacity:.7;font-weight:600;margin-left:4px;}
+
+/* before/after bars */
+.pd-bars{display:flex;flex-direction:column;gap:12px;background:#fff;border-radius:12px;padding:18px 20px;border:1px solid #E5E2DC;}
+.pd-bar-row{display:grid;grid-template-columns:90px 1fr 50px;align-items:center;gap:10px;}
+.pd-bar-label{font-size:12px;font-weight:700;}
+.pd-bar-tracks{display:flex;flex-direction:column;gap:3px;}
+.pd-bar-track{height:7px;background:#F0EDE8;border-radius:4px;overflow:hidden;position:relative;}
+.pd-bar-fill-cur{height:100%;border-radius:4px;opacity:.35;}
+.pd-bar-fill-proj{height:100%;border-radius:4px;transition:width .9s cubic-bezier(.4,0,.2,1);}
+.pd-bar-vals{display:flex;justify-content:flex-end;align-items:center;gap:4px;}
+.pd-cur-val{font-size:11px;color:#aaa;font-weight:600;}
+.pd-proj-val{font-size:14px;font-weight:800;}
+.pd-delta-pill{font-size:10px;font-weight:700;border-radius:8px;padding:1px 5px;}
+.pd-delta-pill.up{background:#D1FAE5;color:#059669;}
+.pd-delta-pill.dn{background:#FEE2E2;color:#DC2626;}
+
+/* dual radar + moves row */
+.pd-lower{display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:start;}
+@media(max-width:900px){.pd-lower{grid-template-columns:1fr;}}
+.pd-radar-wrap{background:#fff;border-radius:12px;padding:14px;border:1px solid #E5E2DC;display:flex;flex-direction:column;align-items:center;}
+.pd-radar-legend{display:flex;gap:14px;margin-top:8px;}
+.pd-leg-item{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#666;}
+.pd-leg-dot{width:10px;height:10px;border-radius:50%;}
+.pd-moves{background:#fff;border-radius:12px;padding:18px 20px;border:1px solid #E5E2DC;display:flex;flex-direction:column;gap:10px;}
+.pd-moves-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:2px;}
+.pd-move-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#333;line-height:1.5;}
+.pd-move-bullet{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;margin-top:1px;}
+.pd-implication{background:#F8F7F4;border-radius:10px;padding:14px 16px;font-size:12px;color:#444;line-height:1.6;border-left:3px solid #2563EB;}
+
+/* custom sliders */
+.proj-custom-wrap{background:#fff;border-radius:12px;padding:20px 22px;border:1.5px dashed #C4B8A8;margin-bottom:0;}
+.proj-slider-title{font-size:13px;font-weight:700;color:#111;margin-bottom:14px;}
+.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
 .slider-dim{font-size:12px;font-weight:700;width:90px;}
-.slider-range{flex:1;accent-color:#2563EB;cursor:pointer;}
-.slider-val{font-size:13px;font-weight:800;width:32px;text-align:right;}
-.slider-avg{margin-top:8px;font-size:13px;font-weight:700;color:#1D3461;}
+.slider-range{flex:1;accent-color:#2563EB;cursor:pointer;height:4px;}
+.slider-val{font-size:13px;font-weight:800;width:36px;text-align:right;}
+.slider-avg{margin-top:6px;font-size:13px;font-weight:700;color:#1D3461;}
+
+/* strategy builder */
+.proj-strat-cta{margin-top:4px;text-align:center;}
+.proj-strat-btn{background:linear-gradient(135deg,#1D3461,#2563EB);color:#fff;border:none;border-radius:12px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s;letter-spacing:-.01em;}
+.proj-strat-btn:hover{opacity:.88;}
+.proj-strat-canvas{background:#fff;border-radius:16px;padding:28px 24px;margin-top:20px;border:2px solid #E5E2DC;}
+.psc-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.psc-title{font-size:17px;font-weight:800;color:#111;}
+.psc-horizon{display:flex;gap:8px;align-items:center;}
+.psc-horizon span{font-size:12px;font-weight:600;color:#666;margin-right:4px;}
+.horizon-btn{border:1.5px solid #D1CCC4;background:#F8F7F4;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;color:#444;transition:all .15s;}
+.horizon-btn.sel{background:#1D3461;color:#fff;border-color:#1D3461;}
+.psc-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;}
+@media(max-width:700px){.psc-cols{grid-template-columns:1fr;}}
+.psc-col{border-radius:12px;padding:16px 14px;border-top:4px solid #E5E2DC;}
+.psc-col.d{border-top-color:var(--D);}
+.psc-col.n{border-top-color:var(--N);}
+.psc-col.a{border-top-color:var(--A);}
+.psc-col-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px;}
+.psc-col-pillar{font-size:12px;color:#555;font-style:italic;margin-bottom:10px;line-height:1.45;}
+.psc-initiative{width:100%;border:1px solid #E5E2DC;border-radius:8px;padding:8px 10px;font-size:12px;font-family:inherit;color:#111;background:#FAFAF8;resize:none;margin-bottom:6px;outline:none;transition:border-color .15s;}
+.psc-initiative:focus{border-color:#2563EB;background:#fff;}
+.psc-export-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.psc-note{font-size:12px;color:#888;}
+.psc-export-btn{background:#059669;color:#fff;border:none;border-radius:10px;padding:12px 26px;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.psc-export-btn:hover{opacity:.88;}
+
+/* case study card */
+.pd-case-study{border-radius:12px;overflow:hidden;border:1px solid #E5E2DC;margin-top:0;}
+.pdc-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;gap:12px;}
+.pdc-brand-wrap{display:flex;align-items:center;gap:10px;}
+.pdc-brand-logo{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+.pdc-brand-name{font-size:14px;font-weight:800;color:#111;}
+.pdc-period{font-size:11px;color:#888;margin-top:1px;}
+.pdc-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:10px;color:#fff;white-space:nowrap;}
+.pdc-body{padding:14px 16px;background:#fff;border-top:1px solid #F0EDE8;}
+.pdc-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#aaa;margin-bottom:5px;}
+.pdc-context{font-size:12px;color:#444;line-height:1.65;margin-bottom:12px;}
+.pdc-result-row{display:flex;gap:10px;align-items:flex-start;background:#F8F7F4;border-radius:8px;padding:10px 12px;margin-bottom:10px;}
+.pdc-result-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.pdc-result-text{font-size:12px;color:#333;line-height:1.6;font-weight:500;}
+.pdc-lesson{font-size:12px;color:#fff;line-height:1.55;padding:10px 14px;border-radius:8px;font-style:italic;font-weight:500;}
 .secondary-btn{background:#F0EDE8!important;color:#1D3461!important;border:1.5px solid #D1CCC4!important;}
 .secondary-btn:hover{background:#E5E2DC!important;}
 </style>
@@ -2918,18 +2995,50 @@ async function exportPPT() {
 <div class="proj-inner">
   <button class="modal-close-btn" onclick="closeProjections()">✕</button>
 
-  <div class="proj-title">Brand DNA Projection Tool</div>
-  <div class="proj-sub" id="projSub"></div>
+  <!-- Header row -->
+  <div class="proj-hdr">
+    <div>
+      <div class="proj-title">Brand DNA Projection Tool</div>
+      <div class="proj-sub" id="projSub2"></div>
+    </div>
+    <div class="proj-cur-scores" id="projCurScores2"></div>
+  </div>
 
-  <!-- Current scores -->
-  <div class="proj-current" id="projCurrent"></div>
+  <!-- Split: tabs left, detail right -->
+  <div class="proj-split">
+    <!-- Scenario tabs -->
+    <div class="proj-tabs" id="projTabs"></div>
 
-  <!-- 4 scenario cards -->
-  <div class="proj-grid" id="projGrid"></div>
+    <!-- Detail panel -->
+    <div class="proj-detail" id="projDetail">
+      <div class="proj-detail-header">
+        <div>
+          <div class="pd-scenario-name" id="pdName"></div>
+          <div class="pd-tagline" id="pdTagline"></div>
+        </div>
+        <div class="pd-dna-badge" id="pdBadge"></div>
+      </div>
+      <div class="pd-bars" id="pdBars"></div>
+      <div class="pd-lower">
+        <div class="pd-radar-wrap">
+          <canvas id="projRadarC" width="220" height="220"></canvas>
+          <div class="pd-radar-legend">
+            <div class="pd-leg-item"><div class="pd-leg-dot" style="background:#C4B8A8"></div>Current</div>
+            <div class="pd-leg-item"><div class="pd-leg-dot" style="background:#2563EB"></div>Projected</div>
+          </div>
+        </div>
+        <div>
+          <div class="pd-moves" id="pdMoves"></div>
+        </div>
+      </div>
+      <div class="pd-implication" id="pdImplication"></div>
+      <div class="pd-case-study" id="pdCaseStudy" style="display:none;"></div>
+    </div>
+  </div>
 
-  <!-- Custom slider -->
-  <div class="proj-slider-wrap">
-    <div class="proj-slider-title">🎛 Custom Scenario — drag to model your own mix</div>
+  <!-- Custom sliders (visible only on custom tab) -->
+  <div class="proj-custom-wrap" id="projCustomWrap" style="display:none;">
+    <div class="proj-slider-title">🎛 Model your own scenario — drag to set target scores</div>
     <div class="slider-row">
       <span class="slider-dim" style="color:var(--D)">Distinction</span>
       <input type="range" class="slider-range" id="slD" min="0" max="100" oninput="updateCustomSlider()">
@@ -2946,6 +3055,50 @@ async function exportPPT() {
       <span class="slider-val" id="slAVal" style="color:var(--A)">—</span>
     </div>
     <div class="slider-avg" id="slAvg"></div>
+  </div>
+
+  <!-- Strategy builder -->
+  <div class="proj-strat-cta" id="projStratCta">
+    <button class="proj-strat-btn" onclick="toggleStrategyBuilder()">📋 Build Growth Strategy → Export to PPT</button>
+  </div>
+  <div class="proj-strat-canvas" id="projStratCanvas" style="display:none;">
+    <div class="psc-hdr">
+      <div class="psc-title" id="pscTitle">Growth Strategy Canvas</div>
+      <div class="psc-horizon">
+        <span>Time horizon:</span>
+        <button class="horizon-btn" onclick="setHorizon('6M',this)">6 months</button>
+        <button class="horizon-btn sel" onclick="setHorizon('12M',this)">12 months</button>
+        <button class="horizon-btn" onclick="setHorizon('18M',this)">18 months</button>
+        <button class="horizon-btn" onclick="setHorizon('24M',this)">24 months</button>
+      </div>
+    </div>
+    <div class="psc-cols">
+      <div class="psc-col d">
+        <div class="psc-col-title" style="color:var(--D)">Distinction</div>
+        <div class="psc-col-pillar" id="pscPillarD"></div>
+        <textarea class="psc-initiative" id="pscD1" rows="2" placeholder="Initiative 1 — e.g. Relaunch hero brand code"></textarea>
+        <textarea class="psc-initiative" id="pscD2" rows="2" placeholder="Initiative 2 — e.g. Selective distribution strategy"></textarea>
+        <textarea class="psc-initiative" id="pscD3" rows="2" placeholder="Initiative 3"></textarea>
+      </div>
+      <div class="psc-col n">
+        <div class="psc-col-title" style="color:var(--N)">Nuance</div>
+        <div class="psc-col-pillar" id="pscPillarN"></div>
+        <textarea class="psc-initiative" id="pscN1" rows="2" placeholder="Initiative 1 — e.g. Human storytelling series"></textarea>
+        <textarea class="psc-initiative" id="pscN2" rows="2" placeholder="Initiative 2 — e.g. Community depth programme"></textarea>
+        <textarea class="psc-initiative" id="pscN3" rows="2" placeholder="Initiative 3"></textarea>
+      </div>
+      <div class="psc-col a">
+        <div class="psc-col-title" style="color:var(--A)">Adventure</div>
+        <div class="psc-col-pillar" id="pscPillarA"></div>
+        <textarea class="psc-initiative" id="pscA1" rows="2" placeholder="Initiative 1 — e.g. Category adjacency sprint"></textarea>
+        <textarea class="psc-initiative" id="pscA2" rows="2" placeholder="Initiative 2 — e.g. Disruptive collab pipeline"></textarea>
+        <textarea class="psc-initiative" id="pscA3" rows="2" placeholder="Initiative 3"></textarea>
+      </div>
+    </div>
+    <div class="psc-export-row">
+      <div class="psc-note" id="pscNote">Fill in your strategic initiatives above, then export.</div>
+      <button class="psc-export-btn" onclick="exportStrategyPPT()">⬇ Export Strategy to PowerPoint</button>
+    </div>
   </div>
 </div>
 </div>
@@ -3063,26 +3216,78 @@ function closeReport(){
 ═══════════════════════════════════════════ */
 const SCENARIOS = [
   {
-    icon:'⚔️', name:'Sharpen the Edge', tagline:'Double down on what makes you unmistakably different',
-    focus:'D', deltas:{D:+14,N:+4,A:+5},
-    implication:'Ruthlessly amplify your point of difference. Own a singular space in the category that competitors cannot replicate. Risk: becomes polarising — but that is the point.'
+    id:'edge', icon:'⚔️', name:'Sharpen the Edge',
+    tagline:'Double down on what makes you unmistakably different',
+    color:'#2563EB', deltas:{D:14,N:4,A:5},
+    moves:['Audit and amplify your most distinctive brand codes — visual, verbal, behavioral','Exit any category convention that dilutes your point of view','Build a scarcity or access mechanic around your hero product or service'],
+    pillarD:'Lead with radical distinctiveness in every touchpoint — own one bold idea above all others.',
+    pillarN:'Use nuance selectively — depth should reinforce and sharpen difference, not soften it.',
+    pillarA:'Adventure serves distinction — be bold only when it sharpens the edge, not for novelty alone.',
+    implication:'Ruthlessly amplify your point of difference. Own a singular space competitors cannot replicate. Risk: becomes polarising — but that is the point.',
+    caseStudy:{
+      brand:'Apple',
+      period:'2011 – 2019',
+      context:'After Steve Jobs returned, Apple stripped everything back to one defining idea: beautifully simple technology that changes what is possible. They exited dozens of product lines, cut the SKU count by 70%, and built scarcity into every launch.',
+      result:'Apple grew from a 3% market share PC maker to the world\'s most valuable brand. Their distinction score in BAV consistently ranks in the top 1% of all measured brands globally — proof that owning one bold idea, relentlessly, compounds into category dominance.',
+      lesson:'Distinction isn\'t about being everywhere. It\'s about being unmistakable somewhere.'
+    }
   },
   {
-    icon:'🤝', name:'Build the Bond', tagline:'Win through emotional depth and audience intimacy',
-    focus:'N', deltas:{D:+5,N:+14,A:+4},
-    implication:'Invest in storytelling, community, and cultural nuance. Shift from awareness to affinity. Risk: perceived as soft by trade — balance emotional resonance with category credibility.'
+    id:'bond', icon:'🤝', name:'Build the Bond',
+    tagline:'Win through emotional depth and audience intimacy',
+    color:'#D97706', deltas:{D:5,N:14,A:4},
+    moves:['Invest in long-form storytelling that speaks to the struggling self, not just the aspirational','Launch a community depth programme — tight circles, not broad audience','Reframe brand language from performance claims to genuine human truths'],
+    pillarD:'Distinction holds — maintain your brand codes while softening the broadcast register.',
+    pillarN:'The centrepiece. Emotional richness, cultural empathy, real human voice at every layer.',
+    pillarA:'Adventure is earned through emotional risk-taking — vulnerability over spectacle.',
+    implication:'Invest in storytelling, community, and cultural nuance. Shift from awareness to affinity. Risk: perceived as soft by trade — balance emotional resonance with category credibility.',
+    caseStudy:{
+      brand:'Dove',
+      period:'2004 – present',
+      context:'Dove was a commodity soap losing ground to premium beauty brands. Instead of competing on product claims, Ogilvy and Unilever made a radical bet: speak to the self-doubt every woman feels, not the aspiration she performs. The Real Beauty campaign was built on real research, real faces, and an honest admission that the beauty industry had been lying.',
+      result:'Dove grew from a $200M brand to over $4B in sales within a decade. Nuance scores — measuring emotional depth and relevance — surged. The campaign is now studied in 40+ business schools as a masterclass in building genuine audience intimacy at scale.',
+      lesson:'Emotional truth is a growth strategy. The audience you trust with your vulnerability becomes your most loyal advocate.'
+    }
   },
   {
-    icon:'🚀', name:'Take the Leap', tagline:'Disrupt the category with bold, unexpected moves',
-    focus:'A', deltas:{D:+4,N:+5,A:+14},
-    implication:'Launch into adjacencies. Challenge category conventions. Hire for provocation, not permission. Risk: outpaces brand equity — ensure the core audience moves with you.'
+    id:'leap', icon:'🚀', name:'Take the Leap',
+    tagline:'Disrupt the category with bold, unexpected moves',
+    color:'#059669', deltas:{D:4,N:5,A:14},
+    moves:['Map category adjacencies and commit to one credible entry in the next 12 months','Build a disruptive collab pipeline — partner with culture-shapers outside your category','Hire for provocation, not permission — bring in creative talent who break conventions'],
+    pillarD:'Distinctiveness evolves — let adventure reshape and refresh what makes you different.',
+    pillarN:'Nuance grows through adventure — go deep in new territories rather than shallow everywhere.',
+    pillarA:'The centrepiece. First-mover bets, boundary-breaking, bold cultural participation.',
+    implication:'Launch into adjacencies. Challenge category conventions. Hire for provocation, not permission. Risk: outpaces brand equity — ensure the core audience moves with you.',
+    caseStudy:{
+      brand:'Red Bull',
+      period:'2005 – 2016',
+      context:'Red Bull was an energy drink with a problem: the category was becoming a commodity. Instead of fighting for shelf space, they leapt into a completely different arena — content, sport, and culture. They built a media house, sponsored cliff diving world championships, put a man in a space suit and dropped him from the stratosphere, and bought a Formula 1 team.',
+      result:'Red Bull Media House became one of the most distributed sports media brands on earth. The Stratos space jump garnered 52 million YouTube views in 24 hours — still a record. Red Bull\'s adventure scores rank among the highest ever measured in BAV. The energy drink is now almost secondary to the brand world around it.',
+      lesson:'The boldest brand move is entering a territory your category has never claimed — and owning it completely before anyone else realises it was available.'
+    }
   },
   {
-    icon:'🌐', name:'Full Spectrum Rise', tagline:'Lift all dimensions in a coordinated brand transformation',
-    focus:'ALL', deltas:{D:+8,N:+9,A:+9},
-    implication:'Requires a multi-year brand platform with aligned investment across product, comms, and culture. Hardest to execute, highest ceiling. Risk: diluted effort — commit fully or pick a lane.'
+    id:'spectrum', icon:'🌐', name:'Full Spectrum Rise',
+    tagline:'Lift all dimensions in a coordinated brand transformation',
+    color:'#7C3AED', deltas:{D:8,N:9,A:9},
+    moves:['Architect a multi-year brand platform with equal investment across D, N, and A pillars','Align comms, product, and culture into one coherent brand world','Set quarterly DNA score benchmarks and build accountability into the org structure'],
+    pillarD:'Distinction is the foundation — sharpen it to hold the brand together as it expands.',
+    pillarN:'Nuance scales through a dedicated audience intimacy programme across all markets.',
+    pillarA:'Adventure is the growth engine — coordinated, culturally-led, and creatively ambitious.',
+    implication:'Requires a multi-year brand platform with aligned investment across product, comms, and culture. Hardest to execute, highest ceiling. Risk: diluted effort — commit fully or pick a lane.',
+    caseStudy:{
+      brand:'Nike',
+      period:'2012 – 2020',
+      context:'Nike entered the 2010s facing a genuine threat: Under Armour was winning on performance credibility, Adidas was winning on cultural cool, and New Balance was quietly winning the emotional story. Nike\'s response was not to pick one lane — it was to build a brand world that could win all three simultaneously. The "Just Do It" platform was re-engineered from a performance slogan into a cultural manifesto, deployed across product innovation (Flyknit, Air Max Day), digital community (Nike+ App), and cultural risk-taking (the Kaepernick campaign).',
+      result:'Nike\'s brand value grew from $17B to $34B in eight years. The Kaepernick campaign, launched despite institutional resistance, drove a 31% spike in online sales within days and cemented Nike\'s position as the most adventurous brand in the category. BAV data shows Nike\'s D, N, and A scores all moved materially upward across the period — a rare full-spectrum gain.',
+      lesson:'Full spectrum transformation requires one unifying idea strong enough to hold three very different strategies together. For Nike, it was belief in human potential. Find yours before you scale.'
+    }
   }
 ];
+
+let _activeScenarioIdx = 0;
+let _projRadar = null;
+let _stratHorizon = '12M';
 
 function openProjections() {
   if (!_lastDiagRec) return;
@@ -3091,50 +3296,152 @@ function openProjections() {
   const avg = Math.round((D+N+A)/3);
   const brand = selBrand?.name||'Brand';
 
-  document.getElementById('projSub').textContent = `${brand} · Current DNA ${avg} · ${meta.cat||''}${meta.market?' · '+meta.market:''}`;
+  document.getElementById('projSub2').textContent = `${brand} · Current DNA ${avg} · ${meta.cat||''}${meta.market?' · '+meta.market:''}`;
+  document.getElementById('projCurScores2').innerHTML = [
+    {l:'D',v:D,c:'var(--D)'},{l:'N',v:N,c:'var(--N)'},{l:'A',v:A,c:'var(--A)'},{l:'Avg',v:avg,c:'#1D3461'}
+  ].map(x=>`<div class="pcs-chip"><div class="pcs-val" style="color:${x.c}">${x.v}</div><div class="pcs-lbl">${x.l}</div></div>`).join('');
 
-  // Current scores
-  document.getElementById('projCurrent').innerHTML = [
-    {l:'Distinction',v:D,c:'var(--D)'},{l:'Nuance',v:N,c:'var(--N)'},{l:'Adventure',v:A,c:'var(--A)'},{l:'DNA Avg',v:avg,c:'#1D3461'}
-  ].map(x=>`<div class="proj-cur-card"><div class="proj-cur-val" style="color:${x.c}">${x.v}</div><div class="proj-cur-lbl">${x.l}</div></div>`).join('');
-
-  // Scenario cards
-  document.getElementById('projGrid').innerHTML = SCENARIOS.map((s,i) => {
-    const pD=Math.min(100,D+s.deltas.D), pN=Math.min(100,N+s.deltas.N), pA=Math.min(100,A+s.deltas.A);
-    const pAvg=Math.round((pD+pN+pA)/3);
-    const avgDelta=pAvg-avg;
-    const scoreHtml = [
-      {l:'D',cur:D,proj:pD,c:'var(--D)'},{l:'N',cur:N,proj:pN,c:'var(--N)'},{l:'A',cur:A,proj:pA,c:'var(--A)'}
-    ].map(x=>{
-      const d=x.proj-x.cur; const cls=d>0?'up':d<0?'dn':'fl'; const ds=d>0?`+${d}`:d<0?`${d}`:'—';
-      return `<div class="proj-score-item">
-        <div class="proj-score-val" style="color:${x.c}">${x.proj}</div>
-        <div class="proj-score-lbl">${x.l}</div>
-        <div class="proj-score-delta ${cls}">${ds}</div>
+  // Build tabs
+  document.getElementById('projTabs').innerHTML = [
+    ...SCENARIOS.map((s,i)=>{
+      const pD=Math.min(100,D+s.deltas.D),pN=Math.min(100,N+s.deltas.N),pA=Math.min(100,A+s.deltas.A);
+      const pAvg=Math.round((pD+pN+pA)/3); const lift=pAvg-avg;
+      return `<div class="proj-tab${i===0?' active':''}" id="ptab_${i}" onclick="selectScenario(${i})">
+        <div class="pt-icon">${s.icon}</div>
+        <div class="pt-name">${s.name}</div>
+        <div class="pt-tag">${s.tagline}</div>
+        <span class="pt-lift">+${lift} DNA avg</span>
       </div>`;
-    }).join('');
-    const avgCls=avgDelta>0?'up':'fl'; const avgDs=avgDelta>0?`+${avgDelta}`:avgDelta<0?`${avgDelta}`:'→';
-    return `<div class="proj-card" id="projCard_${i}">
-      <div class="proj-card-icon">${s.icon}</div>
-      <div class="proj-card-name">${s.name}</div>
-      <div class="proj-card-tagline">${s.tagline}</div>
-      <div class="proj-score-row">${scoreHtml}</div>
-      <div class="proj-avg-badge">DNA ${pAvg} <span class="proj-score-delta ${avgCls}" style="font-size:12px;color:#A5D8FF">${avgDs}</span></div>
-      <div class="proj-implication">${s.implication}</div>
-    </div>`;
-  }).join('');
+    }),
+    `<div class="proj-tab" id="ptab_custom" onclick="selectScenario('custom')">
+      <div class="pt-icon">🎛</div>
+      <div class="pt-name">Custom</div>
+      <div class="pt-tag">Model your own mix</div>
+    </div>`
+  ].join('');
 
-  // Sliders
+  // Init sliders
   document.getElementById('slD').value = D;
   document.getElementById('slN').value = N;
   document.getElementById('slA').value = A;
-  document.getElementById('slDVal').textContent = D;
-  document.getElementById('slNVal').textContent = N;
-  document.getElementById('slAVal').textContent = A;
   updateCustomSlider();
+
+  // Hide strategy canvas
+  document.getElementById('projStratCanvas').style.display='none';
+  document.querySelector('.proj-strat-btn').textContent = '📋 Build Growth Strategy → Export to PPT';
 
   document.getElementById('projModal').style.display='flex';
   document.body.style.overflow='hidden';
+  setTimeout(()=>selectScenario(0), 60);
+}
+
+function selectScenario(idx) {
+  _activeScenarioIdx = idx;
+  const isCustom = idx === 'custom';
+  const t = _lastDiagRec;
+  const bD=t.D||0, bN=t.N||0, bA=t.A||0, bAvg=Math.round((bD+bN+bA)/3);
+
+  document.querySelectorAll('.proj-tab').forEach(el=>el.classList.remove('active'));
+  document.getElementById(isCustom?'ptab_custom':`ptab_${idx}`)?.classList.add('active');
+  document.getElementById('projCustomWrap').style.display = isCustom ? 'block' : 'none';
+
+  let pD, pN, pA, s;
+  if (isCustom) {
+    pD=+document.getElementById('slD').value;
+    pN=+document.getElementById('slN').value;
+    pA=+document.getElementById('slA').value;
+    s = { name:'Custom Scenario', tagline:'Your modelled mix', color:'#2563EB',
+          moves:['Adjust the sliders above to set your target DNA profile','Each dimension represents a strategic investment area','Export your strategy once you have defined your initiatives below'],
+          pillarD:'Define your Distinction strategy — how will you deepen differentiation?',
+          pillarN:'Define your Nuance strategy — how will you build emotional depth?',
+          pillarA:'Define your Adventure strategy — how will you increase boldness?',
+          implication:'This is your custom modelled scenario. Use the strategy builder below to define the initiatives that will move each score.' };
+  } else {
+    s = SCENARIOS[idx];
+    pD=Math.min(100,bD+s.deltas.D); pN=Math.min(100,bN+s.deltas.N); pA=Math.min(100,bA+s.deltas.A);
+  }
+  const pAvg=Math.round((pD+pN+pA)/3);
+  const lift=pAvg-bAvg;
+
+  document.getElementById('pdName').textContent = s.name;
+  document.getElementById('pdTagline').textContent = s.tagline;
+  document.getElementById('pdBadge').innerHTML = `DNA ${pAvg} <span class="pd-dna-delta">+${lift}</span>`;
+
+  const dims=[{l:'Distinction',c:'var(--D)',cur:bD,proj:pD},{l:'Nuance',c:'var(--N)',cur:bN,proj:pN},{l:'Adventure',c:'var(--A)',cur:bA,proj:pA}];
+  document.getElementById('pdBars').innerHTML = dims.map(d=>{
+    const delta=d.proj-d.cur; const cls=delta>0?'up':'fl';
+    return `<div class="pd-bar-row">
+      <div class="pd-bar-label" style="color:${d.c}">${d.l}</div>
+      <div class="pd-bar-tracks">
+        <div class="pd-bar-track"><div class="pd-bar-fill-cur" style="width:${d.cur}%;background:${d.c}"></div></div>
+        <div class="pd-bar-track"><div class="pd-bar-fill-proj" style="width:0%;background:${d.c}" data-target="${d.proj}"></div></div>
+      </div>
+      <div class="pd-bar-vals">
+        <span class="pd-cur-val">${d.cur}→</span>
+        <span class="pd-proj-val" style="color:${d.c}">${d.proj}</span>
+        <span class="pd-delta-pill ${cls}">+${delta}</span>
+      </div>
+    </div>`;
+  }).join('');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll('.pd-bar-fill-proj').forEach(el=>{ el.style.width = el.dataset.target + '%'; });
+  }));
+
+  document.getElementById('pdMoves').innerHTML = `<div class="pd-moves-title">Key strategic moves</div>` +
+    s.moves.map((m,i)=>`<div class="pd-move-item">
+      <div class="pd-move-bullet" style="background:${s.color}">${i+1}</div>
+      <span>${m}</span>
+    </div>`).join('');
+
+  document.getElementById('pdImplication').textContent = s.implication;
+
+  // Case study
+  const csEl = document.getElementById('pdCaseStudy');
+  if (s.caseStudy) {
+    const cs = s.caseStudy;
+    csEl.style.display = 'block';
+    csEl.innerHTML = `
+      <div class="pdc-header" style="background:${s.color}14;">
+        <div class="pdc-brand-wrap">
+          <div class="pdc-brand-logo" style="background:${s.color}">${cs.brand.charAt(0)}</div>
+          <div>
+            <div class="pdc-brand-name">${cs.brand}</div>
+            <div class="pdc-period">${cs.period}</div>
+          </div>
+        </div>
+        <span class="pdc-tag" style="background:${s.color}">Case Study</span>
+      </div>
+      <div class="pdc-body">
+        <div class="pdc-label">What they did</div>
+        <div class="pdc-context">${cs.context}</div>
+        <div class="pdc-result-row">
+          <div class="pdc-result-icon">📈</div>
+          <div class="pdc-result-text">${cs.result}</div>
+        </div>
+        <div class="pdc-lesson" style="background:${s.color}">"${cs.lesson}"</div>
+      </div>`;
+  } else {
+    csEl.style.display = 'none';
+  }
+
+  const rCtx = document.getElementById('projRadarC').getContext('2d');
+  if(_projRadar) _projRadar.destroy();
+  _projRadar = new Chart(rCtx, {
+    type:'radar',
+    data:{
+      labels:['D','N','A'],
+      datasets:[
+        {label:'Current',data:[bD,bN,bA],backgroundColor:'rgba(196,184,168,.08)',borderColor:'#C4B8A8',borderWidth:2,borderDash:[5,4],pointRadius:4,pointBackgroundColor:'#C4B8A8'},
+        {label:'Projected',data:[pD,pN,pA],backgroundColor:`${s.color}18`,borderColor:s.color,borderWidth:2.5,pointRadius:5,pointBackgroundColor:s.color}
+      ]
+    },
+    options:{responsive:false,scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'#E5E2DC'},angleLines:{color:'#E5E2DC'},pointLabels:{font:{size:12,weight:'700'},color:['#2563EB','#D97706','#059669']}}},plugins:{legend:{display:false}}}
+  });
+
+  document.getElementById('pscPillarD').textContent = s.pillarD;
+  document.getElementById('pscPillarN').textContent = s.pillarN;
+  document.getElementById('pscPillarA').textContent = s.pillarA;
+  document.getElementById('pscTitle').textContent = `Growth Strategy Canvas — ${s.name}`;
 }
 
 function updateCustomSlider(){
@@ -3149,11 +3456,132 @@ function updateCustomSlider(){
   const bAvg=Math.round(((base.D||0)+(base.N||0)+(base.A||0))/3);
   const delta=avg-bAvg; const ds=delta>0?`+${delta}`:delta<0?`${delta}`:'same';
   document.getElementById('slAvg').textContent=`DNA Average: ${avg} (${ds} vs current)`;
+  if (_activeScenarioIdx === 'custom') selectScenario('custom');
+}
+
+function toggleStrategyBuilder() {
+  const canvas = document.getElementById('projStratCanvas');
+  const isOpen = canvas.style.display !== 'none';
+  canvas.style.display = isOpen ? 'none' : 'block';
+  document.querySelector('.proj-strat-btn').textContent = isOpen
+    ? '📋 Build Growth Strategy → Export to PPT'
+    : '✕ Close Strategy Builder';
+  if (!isOpen) setTimeout(()=>canvas.scrollIntoView({behavior:'smooth',block:'start'}), 80);
+}
+
+function setHorizon(h, btn) {
+  _stratHorizon = h;
+  document.querySelectorAll('.horizon-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
 }
 
 function closeProjections(){
   document.getElementById('projModal').style.display='none';
   document.body.style.overflow='';
+  if(_projRadar){_projRadar.destroy();_projRadar=null;}
+}
+
+async function exportStrategyPPT() {
+  const t = _lastDiagRec; if(!t) return;
+  const bD=t.D||0,bN=t.N||0,bA=t.A||0,bAvg=Math.round((bD+bN+bA)/3);
+  const brand=selBrand?.name||'Brand';
+  const isCustom=_activeScenarioIdx==='custom';
+  const s = isCustom ? {name:'Custom Scenario',color:'#2563EB',pillarD:'',pillarN:'',pillarA:'',implication:''} : SCENARIOS[_activeScenarioIdx];
+  const pD=isCustom?+document.getElementById('slD').value:Math.min(100,bD+s.deltas.D);
+  const pN=isCustom?+document.getElementById('slN').value:Math.min(100,bN+s.deltas.N);
+  const pA=isCustom?+document.getElementById('slA').value:Math.min(100,bA+s.deltas.A);
+  const pAvg=Math.round((pD+pN+pA)/3);
+  const horizon=_stratHorizon;
+  const get=id=>document.getElementById(id)?.value?.trim()||'';
+  const dInits=[get('pscD1'),get('pscD2'),get('pscD3')].filter(Boolean);
+  const nInits=[get('pscN1'),get('pscN2'),get('pscN3')].filter(Boolean);
+  const aInits=[get('pscA1'),get('pscA2'),get('pscA3')].filter(Boolean);
+
+  const btn=document.querySelector('.psc-export-btn');
+  btn.disabled=true; btn.textContent='Building PPT…';
+
+  try {
+    const pptx=new PptxGenJS();
+    pptx.layout='LAYOUT_WIDE';
+    const BG='#FAFAF8',INK='#1A1A2E',D_COL='#2563EB',N_COL='#D97706',A_COL='#059669';
+    const SC=s.color||D_COL;
+
+    // Slide 1: Cover
+    {
+      const sl=pptx.addSlide();
+      sl.background={color:'#0F1B35'};
+      sl.addText(brand,{x:.7,y:.9,w:10,h:.9,fontSize:36,bold:true,color:'#FFFFFF'});
+      sl.addText(`Growth Scenario: ${s.name}`,{x:.7,y:1.85,w:10,h:.6,fontSize:20,color:'#A5B4FC',italic:true});
+      sl.addText([
+        {text:'Category: ',options:{bold:true,color:'#94A3B8'}},{text:`${meta.cat||'—'}  `,options:{color:'#CBD5E1'}},
+        {text:'Market: ',options:{bold:true,color:'#94A3B8'}},{text:`${meta.market||'—'}  `,options:{color:'#CBD5E1'}},
+        {text:'Horizon: ',options:{bold:true,color:'#94A3B8'}},{text:horizon,options:{color:'#CBD5E1'}},
+      ],{x:.7,y:2.7,w:10,h:.4,fontSize:13});
+      sl.addShape(pptx.ShapeType.rect,{x:.7,y:3.4,w:1.9,h:.9,fill:{color:'#1E3A5F'},line:{color:'#334155',pt:1},rounding:true});
+      sl.addText(`DNA Now\n${bAvg}`,{x:.7,y:3.4,w:1.9,h:.9,align:'center',fontSize:13,color:'#94A3B8',bold:true});
+      sl.addShape(pptx.ShapeType.rect,{x:2.8,y:3.4,w:1.9,h:.9,fill:{color:'#1E3A5F'},line:{color:SC,pt:2},rounding:true});
+      sl.addText(`DNA Target\n${pAvg}`,{x:2.8,y:3.4,w:1.9,h:.9,align:'center',fontSize:13,color:'#A5D8FF',bold:true});
+      sl.addText(`+${pAvg-bAvg} lift`,{x:4.9,y:3.55,w:2.2,h:.6,fontSize:22,bold:true,color:SC});
+      sl.addText('VML · BAV Intelligence · DNA Strategic Projection',{x:.7,y:6.8,w:12,h:.3,fontSize:10,color:'#475569'});
+    }
+
+    // Slide 2: Current vs Projected
+    {
+      const sl=pptx.addSlide();
+      sl.background={color:BG};
+      sl.addText('Current vs Projected DNA',{x:.7,y:.5,w:11,h:.55,fontSize:22,bold:true,color:INK});
+      sl.addText(`${s.name} scenario · ${horizon} horizon`,{x:.7,y:1.1,w:11,h:.35,fontSize:13,color:'#888',italic:true});
+      const dims=[{l:'Distinction',cur:bD,proj:pD,c:D_COL},{l:'Nuance',cur:bN,proj:pN,c:N_COL},{l:'Adventure',cur:bA,proj:pA,c:A_COL}];
+      dims.forEach((d,i)=>{
+        const y=1.8+i*1.45;
+        sl.addText(d.l,{x:.7,y,w:1.9,h:.35,fontSize:13,bold:true,color:d.c});
+        sl.addShape(pptx.ShapeType.rect,{x:.7,y:y+.42,w:9.2*(d.cur/100),h:.22,fill:{color:d.c},opacity:28,rounding:true});
+        sl.addText(`${d.cur}`,{x:10.1,y:y+.38,w:.7,h:.3,fontSize:11,color:'#aaa',bold:true});
+        sl.addShape(pptx.ShapeType.rect,{x:.7,y:y+.72,w:9.2*(d.proj/100),h:.32,fill:{color:d.c},rounding:true});
+        sl.addText(`${d.proj}`,{x:10.1,y:y+.68,w:.7,h:.4,fontSize:13,color:d.c,bold:true});
+        sl.addText(`+${d.proj-d.cur}`,{x:10.9,y:y+.68,w:.7,h:.4,fontSize:13,color:'#059669',bold:true});
+      });
+      sl.addShape(pptx.ShapeType.rect,{x:.7,y:6.15,w:3.4,h:.55,fill:{color:INK},rounding:true});
+      sl.addText(`DNA Average: ${bAvg} → ${pAvg}  (+${pAvg-bAvg})`,{x:.7,y:6.15,w:3.4,h:.55,align:'center',fontSize:12,color:'#fff',bold:true});
+    }
+
+    // Slide 3: Strategy Canvas
+    {
+      const sl=pptx.addSlide();
+      sl.background={color:BG};
+      sl.addText('Growth Strategy Canvas',{x:.7,y:.5,w:11,h:.55,fontSize:22,bold:true,color:INK});
+      sl.addText(`${s.name} · ${horizon} · ${brand}`,{x:.7,y:1.1,w:11,h:.35,fontSize:13,color:'#888',italic:true});
+      const cols=[
+        {title:'Distinction',col:D_COL,pillar:s.pillarD,inits:dInits,x:.45},
+        {title:'Nuance',col:N_COL,pillar:s.pillarN,inits:nInits,x:4.65},
+        {title:'Adventure',col:A_COL,pillar:s.pillarA,inits:aInits,x:8.85}
+      ];
+      cols.forEach(c=>{
+        sl.addShape(pptx.ShapeType.rect,{x:c.x,y:1.6,w:3.9,h:.08,fill:{color:c.col}});
+        sl.addText(c.title,{x:c.x,y:1.75,w:3.9,h:.4,fontSize:14,bold:true,color:c.col});
+        sl.addText(c.pillar||'',{x:c.x,y:2.22,w:3.9,h:.72,fontSize:10,color:'#555',italic:true,lineSpacingMultiple:1.35});
+        (c.inits.length?c.inits:['— Define initiative']).forEach((ini,j)=>{
+          sl.addText(`${j+1}. ${ini}`,{x:c.x,y:3.05+j*1.05,w:3.9,h:.92,fontSize:11,color:INK,lineSpacingMultiple:1.4,valign:'top'});
+        });
+      });
+    }
+
+    // Slide 4: Implication
+    {
+      const sl=pptx.addSlide();
+      sl.background={color:'#0F1B35'};
+      sl.addText('Strategic Implication',{x:.7,y:.8,w:11,h:.55,fontSize:22,bold:true,color:'#fff'});
+      sl.addText(s.implication||'',{x:.7,y:1.7,w:11,h:2.8,fontSize:15,color:'#CBD5E1',lineSpacingMultiple:1.7});
+      sl.addText(`${s.name} · ${brand} · ${horizon} · DNA Target ${pAvg}`,{x:.7,y:6.8,w:11.5,h:.35,fontSize:11,color:'#475569'});
+    }
+
+    await pptx.writeFile({fileName:`DNA_Strategy_${brand.replace(/[^a-z0-9]/gi,'_')}_${s.name.replace(/[^a-z0-9]/gi,'_')}.pptx`});
+  } catch(err){
+    alert('PPT export failed: '+err.message);
+    console.error(err);
+  } finally {
+    btn.disabled=false; btn.textContent='⬇ Export Strategy to PowerPoint';
+  }
 }
 </script>
 </body>
