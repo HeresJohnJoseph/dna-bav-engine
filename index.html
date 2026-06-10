@@ -946,6 +946,7 @@ canvas { display: block; }
   <div class="hdr-sep"></div>
   <div class="hdr-badge" id="hBadge"></div>
   <div class="hdr-right">
+    <button class="hdr-btn" onclick="resetApiKey()" title="Change API key" id="resetKeyBtn" style="display:none;">🔑 API Key</button>
     <button class="hdr-btn" onclick="openAboutDNA()">About DNA</button>
     <button class="hdr-btn" id="compBtn" style="display:none;" onclick="openCompModal()">Set competitors</button>
   </div>
@@ -1518,6 +1519,8 @@ let sortK = 'avg', sortD = -1, radarChart = null, dnaAnimId = null;
   if (!IS_COWORK && !_apiKey) {
     document.getElementById('uploadScreen').classList.add('hidden');
     showKeyScreen();
+  } else if (!IS_COWORK && _apiKey) {
+    document.getElementById('resetKeyBtn').style.display = '';
   }
 })();
 
@@ -1917,6 +1920,7 @@ function submitKey() {
   localStorage.setItem('dna_api_key', k);
   document.getElementById('keyScreen').classList.add('hidden');
   document.getElementById('uploadScreen').classList.remove('hidden');
+  document.getElementById('resetKeyBtn').style.display = '';
 }
 
 // ── DRAG / DROP ──
