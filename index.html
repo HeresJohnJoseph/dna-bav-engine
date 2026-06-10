@@ -1523,14 +1523,19 @@ async function callAI(prompt) {
   if (!_apiKey) { showKeyScreen(); throw new Error('__SILENT__'); }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 90000); // 90s hard timeout
+  // Support both AIzaSy... (query param) and AQ... (Bearer token) key formats
+  const isBearer = _apiKey.startsWith('AQ');
+  const url = isBearer
+    ? 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
+    : `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${_apiKey}`;
+  const headers = { 'Content-Type': 'application/json' };
+  if (isBearer) headers['Authorization'] = `Bearer ${_apiKey}`;
   let resp;
   try {
-    resp = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${_apiKey}`,
-      {
+    resp = await fetch(url, {
         method: 'POST',
         signal: controller.signal,
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
@@ -1539,8 +1544,7 @@ async function callAI(prompt) {
             responseMimeType: 'application/json'
           }
         })
-      }
-    );
+      });
   } catch(e) {
     clearTimeout(timeout);
     if (e.name === 'AbortError') throw new Error('Diagnosis timed out. Try again.');
