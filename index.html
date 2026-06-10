@@ -1896,9 +1896,9 @@ function showKeyScreen() {
 function submitKey() {
   const inp = document.getElementById('keyInput');
   const k = inp.value.trim();
-  if (!k.startsWith('AIzaSy') || k.length < 20) {
+  if ((!k.startsWith('AIzaSy') && !k.startsWith('AQ')) || k.length < 20) {
     inp.style.borderColor = '#DC2626';
-    inp.placeholder = 'Key must start with AIzaSy…';
+    inp.placeholder = 'Paste your API key (AIzaSy… or AQ…)';
     return;
   }
   _apiKey = k;
