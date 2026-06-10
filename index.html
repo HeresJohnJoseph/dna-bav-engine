@@ -1055,15 +1055,18 @@ canvas { display: block; }
           </div>
           <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">
             <span style="min-width:20px;height:20px;background:#F0047F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;">2</span>
-            Click <strong style="color:rgba(255,255,255,.85);">Create API key</strong> → copy it
+            Click <strong style="color:rgba(255,255,255,.85);">Create API key</strong> — key must start with <code style="background:rgba(255,255,255,.12);padding:1px 5px;border-radius:3px;font-size:11px;">AIzaSy</code>
           </div>
           <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">
             <span style="min-width:20px;height:20px;background:#F0047F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;">3</span>
             Paste below — saved locally, never shared
           </div>
+          <div style="margin-top:10px;padding:9px 12px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:8px;font-size:12px;color:rgba(251,191,36,.9);line-height:1.5;">
+            ⚠️ Keys starting with <code style="background:rgba(0,0,0,.2);padding:1px 4px;border-radius:3px;">AQ</code> are Google Cloud credentials — they won't work. Use the link above to get the correct key.
+          </div>
         </div>
       </div>
-      <input id="keyInput" type="password" placeholder="AIzaSy… or AQ…" autocomplete="off" style="width:100%;height:44px;border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:0 14px;font-size:14px;background:rgba(255,255,255,.08);color:#fff;outline:none;margin-bottom:12px;font-family:monospace;" oninput="this.style.borderColor=''" onkeydown="if(event.key==='Enter')submitKey()">
+      <input id="keyInput" type="password" placeholder="AIzaSy…" autocomplete="off" style="width:100%;height:44px;border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:0 14px;font-size:14px;background:rgba(255,255,255,.08);color:#fff;outline:none;margin-bottom:12px;font-family:monospace;" oninput="this.style.borderColor=''" onkeydown="if(event.key==='Enter')submitKey()">
       <button onclick="submitKey()" style="width:100%;height:44px;background:#F0047F;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='#D4036E'" onmouseout="this.style.background='#F0047F'">Start diagnosing →</button>
     </div>
   </div>
@@ -1523,19 +1526,18 @@ async function callAI(prompt) {
   if (!_apiKey) { showKeyScreen(); throw new Error('__SILENT__'); }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 90000); // 90s hard timeout
-  // Support both AIzaSy... (query param) and AQ... (Bearer token) key formats
-  const isBearer = _apiKey.startsWith('AQ');
-  const url = isBearer
-    ? 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
-    : `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${_apiKey}`;
-  const headers = { 'Content-Type': 'application/json' };
-  if (isBearer) headers['Authorization'] = `Bearer ${_apiKey}`;
+  if (_apiKey.startsWith('AQ')) {
+    localStorage.removeItem('dna_api_key'); _apiKey = '';
+    showKeyScreen();
+    throw new Error('__SILENT__');
+  }
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${_apiKey}`;
   let resp;
   try {
     resp = await fetch(url, {
         method: 'POST',
         signal: controller.signal,
-        headers,
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
@@ -1896,9 +1898,15 @@ function showKeyScreen() {
 function submitKey() {
   const inp = document.getElementById('keyInput');
   const k = inp.value.trim();
-  if ((!k.startsWith('AIzaSy') && !k.startsWith('AQ')) || k.length < 20) {
+  if (k.startsWith('AQ')) {
+    inp.style.borderColor = '#F59E0B';
+    inp.value = '';
+    inp.placeholder = 'AQ… keys won\'t work — get an AIzaSy… key from the link above';
+    return;
+  }
+  if (!k.startsWith('AIzaSy') || k.length < 20) {
     inp.style.borderColor = '#DC2626';
-    inp.placeholder = 'Paste your API key (AIzaSy… or AQ…)';
+    inp.placeholder = 'Key must start with AIzaSy…';
     return;
   }
   _apiKey = k;
