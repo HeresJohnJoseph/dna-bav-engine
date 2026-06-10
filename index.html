@@ -1550,7 +1550,10 @@ async function callAI(prompt) {
   const data = await resp.json();
   if (data.error) {
     const msg = data.error.message || 'Gemini API error';
-    if (/leak|invalid|expired/i.test(msg)) { localStorage.removeItem('dna_api_key'); _apiKey = ''; }
+    if (/leak|invalid|expired|api.?key/i.test(msg)) {
+      localStorage.removeItem('dna_api_key'); _apiKey = '';
+      throw new Error('__KEY_LEAKED__');
+    }
     if (data.error.code === 429) throw new Error('Rate limit reached. Wait 1 minute then try again.');
     throw new Error(msg);
   }
@@ -1876,6 +1879,13 @@ If any step failed, report: which step failed, what was on screen, what you trie
 }
 
 // ── KEY SCREEN ──
+function resetApiKey() {
+  localStorage.removeItem('dna_api_key');
+  _apiKey = '';
+  document.getElementById('mainErr').classList.remove('on');
+  showKeyScreen();
+}
+
 function showKeyScreen() {
   document.getElementById('keyScreen').classList.remove('hidden');
 }
@@ -2334,7 +2344,11 @@ async function runDx() {
 
     const errEl = document.getElementById('mainErr');
     errEl.classList.add('on');
-    document.getElementById('mainErrB').textContent = err.message;
+    if (err.message === '__KEY_LEAKED__') {
+      document.getElementById('mainErrB').innerHTML = 'Google flagged your API key as compromised. Generate a new key at <a href="https://aistudio.google.com/apikey" target="_blank" style="color:#2563EB">aistudio.google.com</a>, then reset below.<br><br><button onclick="resetApiKey()" style="background:#2563EB;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;margin-top:2px;">🔑 Reset API Key</button>';
+    } else {
+      document.getElementById('mainErrB').textContent = err.message;
+    }
   }
 }
 
