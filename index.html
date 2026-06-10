@@ -1044,34 +1044,30 @@ canvas { display: block; }
       <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.4);margin-bottom:16px;">VML · BAV Intelligence</div>
       <div style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(32px,5vw,52px);font-weight:700;color:#fff;line-height:1.15;margin-bottom:12px;">Set up your<br><em style="font-style:italic;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">API key</em></div>
       <div style="width:36px;height:2px;background:linear-gradient(90deg,#60a5fa,#f472b6);border-radius:2px;margin:0 auto 14px;"></div>
-      <div style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;">This tool runs on Google Gemini (free tier).<br>Follow the steps below to generate your API key.</div>
+      <div style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;">This tool runs on Groq AI (free, unlimited).<br>Get your free key in under a minute.</div>
     </div>
     <div style="background:rgba(255,255,255,.07);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.14);border-top:3px solid #F0047F;border-radius:16px;padding:32px;box-shadow:0 4px 40px rgba(0,0,0,.35);">
       <div style="margin-bottom:20px;">
-        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:14px;text-transform:uppercase;letter-spacing:.08em;">How to get your key — via Google Cloud Console</div>
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:14px;text-transform:uppercase;letter-spacing:.08em;">How to get your free Groq key</div>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">
             <span style="min-width:20px;height:20px;background:#F0047F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;">1</span>
-            Go to <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:#60a5fa;text-decoration:underline;">console.cloud.google.com/apis/credentials</a>
+            Go to <a href="https://console.groq.com/keys" target="_blank" style="color:#60a5fa;text-decoration:underline;">console.groq.com/keys</a> — sign in with Google
           </div>
           <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">
             <span style="min-width:20px;height:20px;background:#F0047F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;">2</span>
-            Select your project — look for <strong style="color:rgba(255,255,255,.85);">Generative Language Client</strong> or <strong style="color:rgba(255,255,255,.85);">Gemini API</strong>
+            Click <strong style="color:rgba(255,255,255,.85);">Create API Key</strong> → give it any name
           </div>
           <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">
             <span style="min-width:20px;height:20px;background:#F0047F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;">3</span>
-            Click <strong style="color:rgba(255,255,255,.85);">+ Create Credentials → API Key</strong>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">
-            <span style="min-width:20px;height:20px;background:#F0047F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;">4</span>
-            Copy the key (starts with <code style="background:rgba(255,255,255,.12);padding:1px 5px;border-radius:3px;font-size:11px;">AIzaSy</code>) and paste below
+            Copy the key (starts with <code style="background:rgba(255,255,255,.12);padding:1px 5px;border-radius:3px;font-size:11px;">gsk_</code>) and paste below
           </div>
           <div style="margin-top:6px;padding:9px 12px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);border-radius:8px;font-size:12px;color:rgba(96,165,250,.9);line-height:1.5;">
-            💡 After creating the key, restrict it to the <strong>Generative Language API</strong> only to keep your account secure.
+            ✅ Groq keys never expire or get auto-revoked. Free tier handles all your diagnoses.
           </div>
         </div>
       </div>
-      <input id="keyInput" type="password" placeholder="AIzaSy…" autocomplete="off" style="width:100%;height:44px;border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:0 14px;font-size:14px;background:rgba(255,255,255,.08);color:#fff;outline:none;margin-bottom:12px;font-family:monospace;" oninput="this.style.borderColor=''" onkeydown="if(event.key==='Enter')submitKey()">
+      <input id="keyInput" type="password" placeholder="gsk_…" autocomplete="off" style="width:100%;height:44px;border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:0 14px;font-size:14px;background:rgba(255,255,255,.08);color:#fff;outline:none;margin-bottom:12px;font-family:monospace;" oninput="this.style.borderColor=''" onkeydown="if(event.key==='Enter')submitKey()">
       <button onclick="submitKey()" style="width:100%;height:44px;background:#F0047F;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='#D4036E'" onmouseout="this.style.background='#F0047F'">Start diagnosing →</button>
     </div>
   </div>
@@ -1524,7 +1520,7 @@ let sortK = 'avg', sortD = -1, radarChart = null, dnaAnimId = null;
   }
 })();
 
-// ── AI CALL ──
+// ── AI CALL (Groq) ──
 async function callAI(prompt) {
   if (IS_COWORK) {
     const res = await window.cowork.askClaude(prompt, []);
@@ -1532,28 +1528,24 @@ async function callAI(prompt) {
   }
   if (!_apiKey) { showKeyScreen(); throw new Error('__SILENT__'); }
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 90000); // 90s hard timeout
-  if (_apiKey.startsWith('AQ')) {
-    localStorage.removeItem('dna_api_key'); _apiKey = '';
-    showKeyScreen();
-    throw new Error('__SILENT__');
-  }
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${_apiKey}`;
+  const timeout = setTimeout(() => controller.abort(), 90000);
   let resp;
   try {
-    resp = await fetch(url, {
-        method: 'POST',
-        signal: controller.signal,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            maxOutputTokens: 8192,
-            temperature: 0.7,
-            responseMimeType: 'application/json'
-          }
-        })
-      });
+    resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      signal: controller.signal,
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${_apiKey}` },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          { role: 'system', content: 'You are a strategic brand analyst. Always respond with valid JSON only — no markdown, no explanation, just the JSON object.' },
+          { role: 'user', content: prompt }
+        ],
+        max_tokens: 8192,
+        temperature: 0.7,
+        response_format: { type: 'json_object' }
+      })
+    });
   } catch(e) {
     clearTimeout(timeout);
     if (e.name === 'AbortError') throw new Error('Diagnosis timed out. Try again.');
@@ -1562,15 +1554,16 @@ async function callAI(prompt) {
   clearTimeout(timeout);
   const data = await resp.json();
   if (data.error) {
-    const msg = data.error.message || 'Gemini API error';
-    if (/leak|compromised|reported/i.test(msg)) {
+    const msg = data.error.message || 'Groq API error';
+    if (resp.status === 429) throw new Error('Rate limit reached. Wait 1 minute then try again.');
+    if (resp.status === 401) {
       localStorage.removeItem('dna_api_key'); _apiKey = '';
-      throw new Error('__KEY_LEAKED__');
+      showKeyScreen();
+      throw new Error('__SILENT__');
     }
-    if (data.error.code === 429) throw new Error('Rate limit reached. Wait 1 minute then try again.');
     throw new Error(msg);
   }
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  return data.choices?.[0]?.message?.content || '';
 }
 
 function extractText(res) {
@@ -1905,15 +1898,9 @@ function showKeyScreen() {
 function submitKey() {
   const inp = document.getElementById('keyInput');
   const k = inp.value.trim();
-  if (k.startsWith('AQ')) {
-    inp.style.borderColor = '#F59E0B';
-    inp.value = '';
-    inp.placeholder = 'AQ… keys won\'t work — get an AIzaSy… key from the link above';
-    return;
-  }
-  if (!k.startsWith('AIzaSy') || k.length < 20) {
+  if (!k.startsWith('gsk_') || k.length < 20) {
     inp.style.borderColor = '#DC2626';
-    inp.placeholder = 'Key must start with AIzaSy…';
+    inp.placeholder = 'Key must start with gsk_…';
     return;
   }
   _apiKey = k;
