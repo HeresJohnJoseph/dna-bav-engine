@@ -1520,7 +1520,7 @@ async function callAI(prompt) {
     const res = await window.cowork.askClaude(prompt, []);
     return extractText(res);
   }
-  if (!_apiKey) throw new Error('No API key set. Reload the page to enter your key.');
+  if (!_apiKey) { showKeyScreen(); throw new Error('__SILENT__'); }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 90000); // 90s hard timeout
   let resp;
@@ -2342,6 +2342,7 @@ async function runDx() {
     document.getElementById('brandsDiv').style.display='block';
     document.getElementById('diagBtn').disabled=false;
 
+    if (err.message === '__SILENT__') return;
     const errEl = document.getElementById('mainErr');
     errEl.classList.add('on');
     if (err.message === '__KEY_LEAKED__') {
