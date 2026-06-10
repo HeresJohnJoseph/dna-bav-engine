@@ -1043,26 +1043,30 @@ canvas { display: block; }
       <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.4);margin-bottom:16px;">VML · BAV Intelligence</div>
       <div style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(32px,5vw,52px);font-weight:700;color:#fff;line-height:1.15;margin-bottom:12px;">Set up your<br><em style="font-style:italic;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">API key</em></div>
       <div style="width:36px;height:2px;background:linear-gradient(90deg,#60a5fa,#f472b6);border-radius:2px;margin:0 auto 14px;"></div>
-      <div style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;">This tool runs on Google Gemini (free tier).<br>You need your own API key to get started.</div>
+      <div style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;">This tool runs on Google Gemini (free tier).<br>Follow the steps below to generate your API key.</div>
     </div>
     <div style="background:rgba(255,255,255,.07);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.14);border-top:3px solid #F0047F;border-radius:16px;padding:32px;box-shadow:0 4px 40px rgba(0,0,0,.35);">
       <div style="margin-bottom:20px;">
-        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:14px;text-transform:uppercase;letter-spacing:.08em;">How to get your free key</div>
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:14px;text-transform:uppercase;letter-spacing:.08em;">How to get your key — via Google Cloud Console</div>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">
             <span style="min-width:20px;height:20px;background:#F0047F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;">1</span>
-            Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#60a5fa;text-decoration:underline;">aistudio.google.com/app/apikey</a>
+            Go to <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:#60a5fa;text-decoration:underline;">console.cloud.google.com/apis/credentials</a>
           </div>
           <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">
             <span style="min-width:20px;height:20px;background:#F0047F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;">2</span>
-            Click <strong style="color:rgba(255,255,255,.85);">Create API key</strong> — key must start with <code style="background:rgba(255,255,255,.12);padding:1px 5px;border-radius:3px;font-size:11px;">AIzaSy</code>
+            Select your project — look for <strong style="color:rgba(255,255,255,.85);">Generative Language Client</strong> or <strong style="color:rgba(255,255,255,.85);">Gemini API</strong>
           </div>
           <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">
             <span style="min-width:20px;height:20px;background:#F0047F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;">3</span>
-            Paste below — saved locally, never shared
+            Click <strong style="color:rgba(255,255,255,.85);">+ Create Credentials → API Key</strong>
           </div>
-          <div style="margin-top:10px;padding:9px 12px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:8px;font-size:12px;color:rgba(251,191,36,.9);line-height:1.5;">
-            ⚠️ Keys starting with <code style="background:rgba(0,0,0,.2);padding:1px 4px;border-radius:3px;">AQ</code> are Google Cloud credentials — they won't work. Use the link above to get the correct key.
+          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">
+            <span style="min-width:20px;height:20px;background:#F0047F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;">4</span>
+            Copy the key (starts with <code style="background:rgba(255,255,255,.12);padding:1px 5px;border-radius:3px;font-size:11px;">AIzaSy</code>) and paste below
+          </div>
+          <div style="margin-top:6px;padding:9px 12px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);border-radius:8px;font-size:12px;color:rgba(96,165,250,.9);line-height:1.5;">
+            💡 After creating the key, restrict it to the <strong>Generative Language API</strong> only to keep your account secure.
           </div>
         </div>
       </div>
